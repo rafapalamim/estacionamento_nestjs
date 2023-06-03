@@ -1,0 +1,12 @@
+FROM node:18.16.0-alpine3.17
+
+WORKDIR /home/node/api
+
+RUN apk update && apk upgrade
+RUN apk add curl ca-certificates
+
+EXPOSE 3000
+
+USER node
+
+CMD ["tail","-f","/dev/null"];

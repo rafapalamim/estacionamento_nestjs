@@ -1,0 +1,37 @@
+version: '3'
+
+networks:
+  estacionamento:
+
+volumes:
+  estacionamento_mysql:
+
+services:
+
+  api:
+    container_name: estacionamento_api
+    build:
+      context: .
+      dockerfile: ./.docker/api/Dockerfile.dev
+    volumes:
+      - "./api:/home/node/api"
+    ports:
+      - 3000:3000
+    networks:
+      - estacionamento
+
+  db:
+    container_name: estacionamento_db
+    image: mysql:8.0.33
+    volumes:
+      - "estacionamento_mysql:/var/lib/mysql"
+    networks:
+      - estacionamento
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=parking
+      - MYSQL_USER=parking
+      - MYSQL_PASSWORD=password
