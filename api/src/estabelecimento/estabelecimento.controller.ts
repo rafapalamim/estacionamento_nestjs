@@ -21,7 +21,7 @@ import {
   UpdateEstabelecimentoDto,
   UpdateEstabelecimentoOutputDto,
 } from './dto/update-estabelecimento.dto';
-import { ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   FindAllEstabelecimentoDto,
   FindAllEstabelecimentoOutputDto,
