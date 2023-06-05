@@ -6,6 +6,12 @@ import { EstabelecimentoService } from 'src/estabelecimento/estabelecimento.serv
 import { SQLiteModule } from 'src/database/modules/sqlite.module';
 import * as request from 'supertest';
 import { FindEstabelecimentoOutputDto } from 'src/estabelecimento/dto/find-estabelecimento.dto';
+import { EstabelecimentoCreateService } from 'src/estabelecimento/services/create';
+import { EstabelecimentoUpdateService } from 'src/estabelecimento/services/update';
+import { EstabelecimentoDeleteService } from 'src/estabelecimento/services/delete';
+import { EstabelecimentoFindAllService } from 'src/estabelecimento/services/findAll';
+import { EstabelecimentoFindOneService } from 'src/estabelecimento/services/find';
+import { FindAllEstabelecimentoOutputDto } from 'src/estabelecimento/dto/find-all-estabelecimento.dto';
 
 // const populate = async (
 //   appControler: EstabelecimentoController,
@@ -27,7 +33,15 @@ describe('Estabelecimento (e2e)', () => {
     const moduleFixture = await Test.createTestingModule({
       imports: [SQLiteModule],
       controllers: [EstabelecimentoController],
-      providers: [...estabelecimentoProviders, EstabelecimentoService],
+      providers: [
+        ...estabelecimentoProviders,
+        EstabelecimentoService,
+        EstabelecimentoCreateService,
+        EstabelecimentoUpdateService,
+        EstabelecimentoDeleteService,
+        EstabelecimentoFindAllService,
+        EstabelecimentoFindOneService,
+      ],
     }).compile();
 
     app = moduleFixture.createNestApplication();
@@ -117,11 +131,11 @@ describe('Estabelecimento (e2e)', () => {
 
     expect(response.status).toBe(HttpStatus.OK);
 
-    const body: FindEstabelecimentoOutputDto[] = response.body;
+    const body: FindAllEstabelecimentoOutputDto = response.body;
 
-    expect(body.length).toBe(1);
-    expect(body[0].id).toEqual(1);
-    expect(body[0].nome).toEqual('John Inc');
+    expect(body.data.length).toBe(1);
+    expect(body.data[0].id).toEqual(1);
+    expect(body.data[0].nome).toEqual('John Inc');
   });
 
   it('/estabelecimento (GET) Deve retornar erro ao não encontrar estabelecimentos com a busca fornecida (cnpj=111)', async () => {

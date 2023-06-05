@@ -3,14 +3,29 @@ import { EstabelecimentoService } from './estabelecimento.service';
 import { estabelecimentoProviders } from './estabelecimento.providers';
 import { CreateEstabelecimentoDto } from './dto/create-estabelecimento.dto';
 import { SQLiteModule } from 'src/database/modules/sqlite.module';
+import { EstabelecimentoCreateService } from './services/create';
+import { EstabelecimentoUpdateService } from './services/update';
+import { EstabelecimentoDeleteService } from './services/delete';
+import { EstabelecimentoFindAllService } from './services/findAll';
+import { EstabelecimentoFindOneService } from './services/find';
 
 describe('EstabelecimentoService', () => {
   let service: EstabelecimentoService;
 
+  // Mockar todos os serviços...
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [SQLiteModule],
-      providers: [...estabelecimentoProviders, EstabelecimentoService],
+      providers: [
+        ...estabelecimentoProviders,
+        EstabelecimentoService,
+        EstabelecimentoCreateService,
+        EstabelecimentoUpdateService,
+        EstabelecimentoDeleteService,
+        EstabelecimentoFindAllService,
+        EstabelecimentoFindOneService,
+      ],
     }).compile();
 
     service = module.get<EstabelecimentoService>(EstabelecimentoService);
@@ -120,10 +135,13 @@ describe('EstabelecimentoService', () => {
     await service.create(input3);
 
     const findAll = await service.findAll({});
-    expect(findAll.length).toEqual(3);
+    expect(findAll.data.length).toEqual(3);
+    expect(findAll.paginacao.paginaAtual).toBe(0);
+    expect(findAll.paginacao.totalDeRegistros).toBe(3);
+    expect(findAll.paginacao.ultimaPagina).toBe(0);
 
     const findAll2 = await service.findAll({ cnpj: '1234567' });
-    expect(findAll2.length).toEqual(2);
+    expect(findAll2.data.length).toEqual(2);
   });
 
   it('deve remover um estabelecimento pelo ID', async () => {

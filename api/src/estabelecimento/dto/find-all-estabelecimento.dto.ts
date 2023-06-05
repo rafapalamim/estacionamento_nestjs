@@ -5,7 +5,7 @@ export class FindAllEstabelecimentoDto {
   pagina?: number = 0;
 }
 
-export class FindAllEstabelecimentoOutputDto {
+class Estabelecimento {
   id: number;
   nome: string;
   cnpj: string;
@@ -15,4 +15,15 @@ export class FindAllEstabelecimentoOutputDto {
   quantidade_vagas_carros: number;
   created_at: Date;
   updated_at: Date;
+}
+
+class Paginacao {
+  totalDeRegistros: number;
+  paginaAtual: number;
+  ultimaPagina: number;
+}
+
+export class FindAllEstabelecimentoOutputDto {
+  data: Estabelecimento[];
+  paginacao: Paginacao;
 }

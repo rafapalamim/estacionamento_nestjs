@@ -4,8 +4,14 @@ import { EstabelecimentoService } from './estabelecimento.service';
 import { SQLiteModule } from 'src/database/modules/sqlite.module';
 import { estabelecimentoProviders } from './estabelecimento.providers';
 import { CreateEstabelecimentoDto } from './dto/create-estabelecimento.dto';
-import { UpdateEstabelecimentoDto } from './dto/update-estabelecimento.dto';
-import { FindAllEstabelecimentoDto } from './dto/find-all-estabelecimento.dto';
+import {
+  UpdateEstabelecimentoDto,
+  UpdateEstabelecimentoOutputDto,
+} from './dto/update-estabelecimento.dto';
+import {
+  FindAllEstabelecimentoDto,
+  FindAllEstabelecimentoOutputDto,
+} from './dto/find-all-estabelecimento.dto';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 describe('EstabelecimentoController', () => {
@@ -51,19 +57,28 @@ describe('EstabelecimentoController', () => {
           throw new NotFoundException('Nenhum estabelecimento encontrado');
         }
 
-        return [
-          {
-            id: Date.now(),
-            nome: 'name',
-            cnpj: '123456',
-            endereco: 'Avenida',
-            telefone: '551133332222',
-            quantidade_vagas_motos: 1,
-            quantidade_vagas_carros: 1,
-            created_at: new Date(),
-            updated_at: new Date(),
+        const retorno: FindAllEstabelecimentoOutputDto = {
+          data: [
+            {
+              id: Date.now(),
+              nome: 'name',
+              cnpj: '123456',
+              endereco: 'Avenida',
+              telefone: '551133332222',
+              quantidade_vagas_motos: 1,
+              quantidade_vagas_carros: 1,
+              created_at: new Date(),
+              updated_at: new Date(),
+            },
+          ],
+          paginacao: {
+            paginaAtual: 0,
+            totalDeRegistros: 1,
+            ultimaPagina: 0,
           },
-        ];
+        };
+
+        return retorno;
       }),
     remove: jest.fn().mockImplementation((id: number) => {
       if (id === 2) {
@@ -172,8 +187,8 @@ describe('EstabelecimentoController', () => {
 
   it('Listar estabelecimentos', async () => {
     const list = await controller.findAll({});
-    expect(list.length).toBe(1);
-    expect(list).toEqual([
+    expect(list.data.length).toBe(1);
+    expect(list.data).toEqual([
       {
         id: expect.any(Number),
         nome: expect.any(String),
