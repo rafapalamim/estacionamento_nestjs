@@ -4,10 +4,7 @@ import { EstabelecimentoService } from './estabelecimento.service';
 import { SQLiteModule } from 'src/database/modules/sqlite.module';
 import { estabelecimentoProviders } from './estabelecimento.providers';
 import { CreateEstabelecimentoDto } from './dto/create-estabelecimento.dto';
-import {
-  UpdateEstabelecimentoDto,
-  UpdateEstabelecimentoOutputDto,
-} from './dto/update-estabelecimento.dto';
+import { UpdateEstabelecimentoDto } from './dto/update-estabelecimento.dto';
 import {
   FindAllEstabelecimentoDto,
   FindAllEstabelecimentoOutputDto,

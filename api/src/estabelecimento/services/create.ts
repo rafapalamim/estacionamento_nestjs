@@ -1,4 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { EstabelecimentoEntity } from '../entities/estabelecimento.entity';
 import {
@@ -17,6 +21,12 @@ export class EstabelecimentoCreateService {
     data: CreateEstabelecimentoDto,
   ): Promise<CreateEstabelecimentoOutputDto> {
     const estabelecimento = await this.repository.save(data);
+
+    if (!estabelecimento) {
+      throw new InternalServerErrorException(
+        'Não foi possível incluir o estabelecimento',
+      );
+    }
 
     return {
       id: estabelecimento.id,

@@ -11,10 +11,11 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('API de estacionamento')
     .setDescription('API criada no teste Dr. Consulta')
-    .setVersion('1.0')
+    .setVersion('v1')
+    .addServer('http://localhost:3000', 'Desenvolvimento')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api/v1', app, document);
 
   await app.listen(3000);
 }

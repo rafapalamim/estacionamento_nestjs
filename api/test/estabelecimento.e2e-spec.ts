@@ -54,7 +54,7 @@ describe('Estabelecimento (e2e)', () => {
 
   it('/estabelecimento (POST)', async () => {
     return request(app.getHttpServer())
-      .post('/estabelecimento')
+      .post('/api/v1/estabelecimento')
       .send({
         nome: 'John Inc',
         cnpj: '12345',
@@ -71,7 +71,7 @@ describe('Estabelecimento (e2e)', () => {
 
   it('/estabelecimento (POST) Deve retornar erro com algum campo inválido', async () => {
     const response = await request(app.getHttpServer())
-      .post('/estabelecimento')
+      .post('/api/v1/estabelecimento')
       .send({
         nome: '',
         cnpj: '12345',
@@ -88,7 +88,7 @@ describe('Estabelecimento (e2e)', () => {
     expect(body.message[0]).toBe('O nome é um campo obrigatório');
 
     const response2 = await request(app.getHttpServer())
-      .post('/estabelecimento')
+      .post('/api/v1/estabelecimento')
       .send({
         nome: 'Teste',
         cnpj: '12345',
@@ -107,7 +107,7 @@ describe('Estabelecimento (e2e)', () => {
     );
 
     const response3 = await request(app.getHttpServer())
-      .post('/estabelecimento')
+      .post('/api/v1/estabelecimento')
       .send({
         cnpj: '12345',
         endereco: 'Avenida',
@@ -127,7 +127,9 @@ describe('Estabelecimento (e2e)', () => {
     // const appController = app.get(EstabelecimentoController);
     // await populate(appController);
 
-    const response = await request(app.getHttpServer()).get('/estabelecimento');
+    const response = await request(app.getHttpServer()).get(
+      '/api/v1/estabelecimento',
+    );
 
     expect(response.status).toBe(HttpStatus.OK);
 
@@ -140,7 +142,7 @@ describe('Estabelecimento (e2e)', () => {
 
   it('/estabelecimento (GET) Deve retornar erro ao não encontrar estabelecimentos com a busca fornecida (cnpj=111)', async () => {
     const response = await request(app.getHttpServer()).get(
-      '/estabelecimento?cnpj=111',
+      '/api/v1/estabelecimento?cnpj=111',
     );
 
     expect(response.status).toBe(HttpStatus.NOT_FOUND);
@@ -148,7 +150,7 @@ describe('Estabelecimento (e2e)', () => {
 
   it('/estabelecimento/:id (GET)', async () => {
     const response = await request(app.getHttpServer()).get(
-      '/estabelecimento/1',
+      '/api/v1/estabelecimento/1',
     );
 
     expect(response.status).toBe(HttpStatus.OK);
@@ -160,7 +162,7 @@ describe('Estabelecimento (e2e)', () => {
 
   it('/estabelecimento/:id (GET) Deve retornar erro com id não existente', async () => {
     const response = await request(app.getHttpServer()).get(
-      '/estabelecimento/2',
+      '/api/v1/estabelecimento/2',
     );
 
     expect(response.status).toBe(HttpStatus.NOT_FOUND);
@@ -168,7 +170,7 @@ describe('Estabelecimento (e2e)', () => {
 
   it('/estabelecimento/:id (PATCH)', async () => {
     const response = await request(app.getHttpServer())
-      .patch('/estabelecimento/1')
+      .patch('/api/v1/estabelecimento/1')
       .send({
         nome: 'John Inc 2',
         cnpj: '12345',
@@ -187,7 +189,7 @@ describe('Estabelecimento (e2e)', () => {
 
   it('/estabelecimento/:id (PATCH) Deve conseguir atualizar parcialmente os dados', async () => {
     const response = await request(app.getHttpServer())
-      .patch('/estabelecimento/1')
+      .patch('/api/v1/estabelecimento/1')
       .send({
         quantidade_vagas_carros: 50,
         quantidade_vagas_motos: 10,
@@ -203,7 +205,7 @@ describe('Estabelecimento (e2e)', () => {
 
   it('/estabelecimento/:id (PATCH) Deve retornar erro ao atualizar com dados inválidos', async () => {
     const response = await request(app.getHttpServer())
-      .patch('/estabelecimento/1')
+      .patch('/api/v1/estabelecimento/1')
       .send({
         quantidade_vagas_carros: -1,
         quantidade_vagas_motos: 10,
@@ -212,7 +214,7 @@ describe('Estabelecimento (e2e)', () => {
     expect(response.status).toBe(HttpStatus.BAD_REQUEST);
 
     const response2 = await request(app.getHttpServer())
-      .patch('/estabelecimento/1')
+      .patch('/api/v1/estabelecimento/1')
       .send({
         nome: '',
         quantidade_vagas_carros: 10,
@@ -224,7 +226,7 @@ describe('Estabelecimento (e2e)', () => {
 
   it('/estabelecimento/:id (PATCH) Deve retornar erro com id não existente', async () => {
     const response = await request(app.getHttpServer())
-      .patch('/estabelecimento/2')
+      .patch('/api/v1/stabelecimento/2')
       .send({
         nome: 'John Inc 2',
         cnpj: '12345',
@@ -239,7 +241,7 @@ describe('Estabelecimento (e2e)', () => {
 
   it('/estabelecimento/:id (DELETE)', async () => {
     const response = await request(app.getHttpServer()).delete(
-      '/estabelecimento/1',
+      '/api/v1/estabelecimento/1',
     );
 
     expect(response.status).toBe(HttpStatus.NO_CONTENT);
@@ -247,7 +249,7 @@ describe('Estabelecimento (e2e)', () => {
 
   it('/estabelecimento/:id (DELETE) Deve retornar erro com id não existente', async () => {
     const response = await request(app.getHttpServer()).delete(
-      '/estabelecimento/2',
+      '/api/v1/estabelecimento/2',
     );
 
     expect(response.status).toBe(HttpStatus.BAD_REQUEST);
