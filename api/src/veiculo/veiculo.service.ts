@@ -1,26 +1,58 @@
-import { Injectable } from '@nestjs/common';
-import { CreateVeiculoDto } from './dto/create-veiculo.dto';
-import { UpdateVeiculoDto } from './dto/update-veiculo.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import {
+  CreateVeiculoDto,
+  CreateVeiculoOutputDto,
+} from './dto/create-veiculo.dto';
+import {
+  UpdateVeiculoDto,
+  UpdateVeiculoOutputDto,
+} from './dto/update-veiculo.dto';
+import { VeiculoCreateService } from './services/create';
+import { VeiculoUpdateService } from './services/update';
+import { VeiculoDeleteService } from './services/delete';
+import { VeiculoFindAllService } from './services/findAll';
+import { VeiculoFindOneService } from './services/find';
+import {
+  FindAllVeiculosDto,
+  FindAllVeiculosOutputDto,
+} from './dto/find-all-veiculos.dto';
+import { FindVeiculoOutputDto } from './dto/find-veiculo.dto';
 
 @Injectable()
 export class VeiculoService {
-  create(createVeiculoDto: CreateVeiculoDto) {
-    return 'This action adds a new veiculo';
+  constructor(
+    @Inject(VeiculoCreateService)
+    private createService: VeiculoCreateService,
+    @Inject(VeiculoUpdateService)
+    private updateService: VeiculoUpdateService,
+    @Inject(VeiculoDeleteService)
+    private deleteService: VeiculoDeleteService,
+    @Inject(VeiculoFindAllService)
+    private findAllService: VeiculoFindAllService,
+    @Inject(VeiculoFindOneService)
+    private findOneService: VeiculoFindOneService,
+  ) {}
+
+  async create(data: CreateVeiculoDto): Promise<CreateVeiculoOutputDto> {
+    return await this.createService.execute(data);
   }
 
-  findAll() {
-    return `This action returns all veiculo`;
+  async findAll(query: FindAllVeiculosDto): Promise<FindAllVeiculosOutputDto> {
+    return await this.findAllService.execute(query);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} veiculo`;
+  async findOne(id: number): Promise<FindVeiculoOutputDto> {
+    return await this.findOneService.execute(id);
   }
 
-  update(id: number, updateVeiculoDto: UpdateVeiculoDto) {
-    return `This action updates a #${id} veiculo`;
+  async update(
+    id: number,
+    data: UpdateVeiculoDto,
+  ): Promise<UpdateVeiculoOutputDto> {
+    return await this.updateService.execute(id, data);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} veiculo`;
+  async remove(id: number): Promise<void> {
+    return await this.deleteService.execute(id);
   }
 }
