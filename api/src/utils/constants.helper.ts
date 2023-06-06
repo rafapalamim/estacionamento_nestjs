@@ -1,8 +1,7 @@
-const estabelecimentoRepositorio = 'ESTABELECIMENTO_REPOSITORY';
-const dataSource = 'DATA_SOURCE';
-const registrosPorPagina = 10;
 export const Constants = {
-  estabelecimentoRepositorio,
-  dataSource,
-  registrosPorPagina,
+  estabelecimentoRepositorio: 'ESTABELECIMENTO_REPOSITORY',
+  veiculoRepositorio: 'VEICULO_REPOSITORY',
+  dataSource: 'DATA_SOURCE',
+  registrosPorPagina: 10,
+  repository: 'REPOSITORY',
 };
