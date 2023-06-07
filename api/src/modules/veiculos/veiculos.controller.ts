@@ -89,8 +89,8 @@ export class VeiculosController {
     status: 404,
     description: 'Veículo não encontrado',
   })
-  find(@Param('id') id: number) {
-    return this.findService.execute(id);
+  async find(@Param('id') id: number): Promise<FindVeiculoOutput> {
+    return await this.findService.execute(id);
   }
 
   @Get()
@@ -123,7 +123,7 @@ export class VeiculosController {
     status: 500,
     description: 'Não foi possível remover o veículo',
   })
-  destroy(@Param('id') id: number) {
-    return this.destroyService.execute(id);
+  async destroy(@Param('id') id: number): Promise<void> {
+    return await this.destroyService.execute(id);
   }
 }

@@ -102,8 +102,8 @@ export class EstabelecimentosController {
     status: 404,
     description: 'Estabelecimento não encontrado',
   })
-  find(@Param('id') id: number) {
-    return this.findService.execute(id);
+  async find(@Param('id') id: number): Promise<FindEstabelecimentoOutput> {
+    return await this.findService.execute(id);
   }
 
   @Get()
@@ -137,7 +137,7 @@ export class EstabelecimentosController {
     status: 500,
     description: 'Não foi possível remover o estabelecimento',
   })
-  destroy(@Param('id') id: number) {
-    return this.destroyService.execute(id);
+  async destroy(@Param('id') id: number): Promise<void> {
+    return await this.destroyService.execute(id);
   }
 }
