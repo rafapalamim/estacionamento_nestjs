@@ -38,7 +38,7 @@ export default class EstabelecimentoUpdateService
 
     if (!find) {
       throw new BadRequestException(
-        'Não foi possível incluir/atualizar o recurso. Estabelecimento não encontrado',
+        'Não foi possível incluir ou atualizar o recurso. Estabelecimento não encontrado',
       );
     }
 

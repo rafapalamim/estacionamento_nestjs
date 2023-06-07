@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateEstabelecimentoErrorOutputDto {
+export class ThrowableError {
   @ApiProperty({
     default: 400,
   })
