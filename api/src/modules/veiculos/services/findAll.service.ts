@@ -1,23 +1,17 @@
 import BaseService from 'src/modules/@base/services/service.base';
-import EstabelecimentosEntity from '../estabelecimentos.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { IFindAllService } from 'src/modules/@base/services/findAll.interface';
-import {
-  FindAllEstabelecimentoInput,
-  FindAllEstabelecimentoOutput,
-} from '../dto/findAll.dto';
 import { Constants } from 'src/utils/constants.helper';
+import VeiculosEntity from '../veiculos.entity';
+import { FindAllVeiculoInput, FindAllVeiculoOutput } from '../dto/findAll.dto';
 import { MessagesAPI } from 'src/utils/messages.helper';
 
 @Injectable()
-export default class EstabelecimentoFindAllService
-  extends BaseService<EstabelecimentosEntity>
-  implements
-    IFindAllService<FindAllEstabelecimentoInput, FindAllEstabelecimentoOutput>
+export default class VeiculoFindAllService
+  extends BaseService<VeiculosEntity>
+  implements IFindAllService<FindAllVeiculoInput, FindAllVeiculoOutput>
 {
-  async execute(
-    query: FindAllEstabelecimentoInput,
-  ): Promise<FindAllEstabelecimentoOutput> {
+  async execute(query: FindAllVeiculoInput): Promise<FindAllVeiculoOutput> {
     const { pagina, ...params } = query;
     const paginaAtual = pagina || 0;
     const pular = paginaAtual * Constants.registrosPorPagina;
@@ -30,14 +24,12 @@ export default class EstabelecimentoFindAllService
     });
 
     if (result.length < 1) {
-      throw new NotFoundException(
-        MessagesAPI.ESTABELECIMENTO.FIND_ALL.NOT_FOUND,
-      );
+      throw new NotFoundException(MessagesAPI.VEICULO.FIND_ALL.NOT_FOUND);
     }
 
     return {
-      data: result.map((estabelecimento: EstabelecimentosEntity) => {
-        return { ...estabelecimento };
+      data: result.map((veiculo: VeiculosEntity) => {
+        return { ...veiculo };
       }),
       pagination: {
         total: total,

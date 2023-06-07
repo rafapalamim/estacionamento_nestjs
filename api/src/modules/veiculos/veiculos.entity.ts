@@ -1,18 +1,8 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity } from 'typeorm';
+import { BaseEntity } from '../@base/entities/base.entity';
 
 @Entity('veiculos')
-export class VeiculoEntity {
-  @PrimaryGeneratedColumn({
-    unsigned: true,
-  })
-  id: number;
-
+export default class VeiculosEntity extends BaseEntity {
   @Column({
     nullable: false,
     length: 100,
@@ -21,7 +11,7 @@ export class VeiculoEntity {
 
   @Column({
     nullable: false,
-    length: 80,
+    length: 100,
   })
   modelo: string;
 
@@ -42,10 +32,4 @@ export class VeiculoEntity {
     length: 50,
   })
   tipo: string;
-
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
 }

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { EstabelecimentoModule } from './estabelecimento/estabelecimento.module';
 import { MySQLModule } from './database/modules/mysql.module';
-import { VeiculoModule } from './veiculo/veiculo.module';
+import { EstabelecimentosModule } from './modules/estabelecimentos/estabelecimentos.module';
+import { VeiculosModule } from './modules/veiculos/veiculos.module';
 
 @Module({
-  imports: [MySQLModule, EstabelecimentoModule, VeiculoModule],
+  imports: [MySQLModule, EstabelecimentosModule, VeiculosModule],
   controllers: [],
   providers: [],
 })

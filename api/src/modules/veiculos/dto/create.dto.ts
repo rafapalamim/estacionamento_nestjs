@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
-export class CreateVeiculoDto {
+export class CreateVeiculoInput {
   @ApiProperty({
     example: 'Volkswagen',
     maxLength: 100,
@@ -13,7 +13,7 @@ export class CreateVeiculoDto {
 
   @ApiProperty({
     example: 'Gol',
-    maxLength: 80,
+    maxLength: 100,
   })
   @IsNotEmpty({
     message: 'O modelo do veículo é um campo obrigatório',
@@ -21,7 +21,7 @@ export class CreateVeiculoDto {
   modelo: string;
 
   @ApiProperty({
-    example: 'Vermelho',
+    example: 'Azul',
     maxLength: 50,
   })
   @IsNotEmpty({
@@ -30,7 +30,7 @@ export class CreateVeiculoDto {
   cor: string;
 
   @ApiProperty({
-    examples: ['BRA2E19', 'BRA2119'],
+    examples: ['ABC1234', 'ABC1E34'],
     maxLength: 7,
   })
   @IsNotEmpty({
@@ -39,7 +39,7 @@ export class CreateVeiculoDto {
   placa: string;
 
   @ApiProperty({
-    example: 'Esportivo',
+    example: 'Hatch',
     maxLength: 50,
   })
   @IsNotEmpty({
@@ -48,24 +48,9 @@ export class CreateVeiculoDto {
   tipo: string;
 }
 
-export class CreateVeiculoOutputDto {
+export class CreateVeiculoOutput {
   @ApiProperty({
     description: 'Identificador único do veículo na aplicação',
   })
   id: number;
-}
-
-export class CreateVeiculoErrorOutputDto {
-  @ApiProperty({
-    default: 400,
-  })
-  statusCode: number;
-
-  @ApiProperty()
-  message: string[];
-
-  @ApiProperty({
-    default: 'bad request',
-  })
-  error: string;
 }

@@ -3,6 +3,7 @@ import { SQLiteModule } from 'src/database/modules/sqlite.module';
 import { EstabelecimentosController } from '../estabelecimentos.controller';
 import { estabelecimentosProviders } from '../estabelecimentos.providers';
 import { CreateEstabelecimentoInput } from '../dto/create.dto';
+import { MessagesAPI } from 'src/utils/messages.helper';
 
 describe('EstabelecimentoController', () => {
   let controller: EstabelecimentosController;
@@ -112,9 +113,7 @@ describe('EstabelecimentoController', () => {
 
     expect(
       async () => await controller.update(inputUpdate),
-    ).rejects.toThrowError(
-      'Não foi possível incluir ou atualizar o recurso. Estabelecimento não encontrado',
-    );
+    ).rejects.toThrowError(MessagesAPI.ESTABELECIMENTO.UPDATE.NOT_FOUND);
   });
 
   it('Deve encontrar um registro pelo ID', async () => {
@@ -145,7 +144,7 @@ describe('EstabelecimentoController', () => {
 
   it('Não deve encontrar um registro pelo ID', async () => {
     expect(async () => await controller.find(1)).rejects.toThrowError(
-      'Não foi possível encontrar o estabelecimento',
+      MessagesAPI.ESTABELECIMENTO.FIND.NOT_FOUND,
     );
   });
 
@@ -324,7 +323,7 @@ describe('EstabelecimentoController', () => {
 
     expect(
       async () => await controller.findAll({ cnpj: '111' }),
-    ).rejects.toThrowError('Nenhum estabelecimento encontrado');
+    ).rejects.toThrowError(MessagesAPI.ESTABELECIMENTO.FIND_ALL.NOT_FOUND);
   });
 
   it('Deve remover um registro', async () => {
@@ -344,7 +343,7 @@ describe('EstabelecimentoController', () => {
 
   it('Não deve remover um registro com id não existente', async () => {
     expect(async () => await controller.destroy(10)).rejects.toThrowError(
-      'Não foi possível deletar o estabelecimento. O estabelecimento não existe',
+      MessagesAPI.ESTABELECIMENTO.DESTROY.NOT_FOUND,
     );
   });
 });

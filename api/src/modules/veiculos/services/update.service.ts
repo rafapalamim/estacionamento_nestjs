@@ -4,23 +4,17 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import BaseService from 'src/modules/@base/services/service.base';
-import {
-  UpdateEstabelecimentoInput,
-  UpdateEstabelecimentoOutput,
-} from '../dto/update.dto';
 import { IUpdateService } from 'src/modules/@base/services/update.interface';
-import EstabelecimentosEntity from '../estabelecimentos.entity';
+import VeiculosEntity from '../veiculos.entity';
+import { UpdateVeiculoInput, UpdateVeiculoOutput } from '../dto/update.dto';
 import { MessagesAPI } from 'src/utils/messages.helper';
 
 @Injectable()
-export default class EstabelecimentoUpdateService
-  extends BaseService<EstabelecimentosEntity>
-  implements
-    IUpdateService<UpdateEstabelecimentoInput, UpdateEstabelecimentoOutput>
+export default class VeiculoUpdateService
+  extends BaseService<VeiculosEntity>
+  implements IUpdateService<UpdateVeiculoInput, UpdateVeiculoOutput>
 {
-  async execute(
-    data: UpdateEstabelecimentoInput,
-  ): Promise<UpdateEstabelecimentoOutput> {
+  async execute(data: UpdateVeiculoInput): Promise<UpdateVeiculoOutput> {
     const id = data.id || null;
 
     if (!id) {
@@ -29,7 +23,7 @@ export default class EstabelecimentoUpdateService
 
       if (!entity.id)
         throw new InternalServerErrorException(
-          MessagesAPI.ESTABELECIMENTO.UPDATE.SERVER_ERROR,
+          MessagesAPI.VEICULO.UPDATE.SERVER_ERROR,
         );
 
       return entity;
@@ -38,7 +32,7 @@ export default class EstabelecimentoUpdateService
     const find = await this.repository.findOneBy({ id: id });
 
     if (!find) {
-      throw new NotFoundException(MessagesAPI.ESTABELECIMENTO.UPDATE.NOT_FOUND);
+      throw new NotFoundException(MessagesAPI.VEICULO.UPDATE.NOT_FOUND);
     }
 
     const newData = this.repository.merge(find, data);
@@ -46,7 +40,7 @@ export default class EstabelecimentoUpdateService
 
     if (!updated)
       throw new InternalServerErrorException(
-        MessagesAPI.ESTABELECIMENTO.UPDATE.SERVER_ERROR,
+        MessagesAPI.VEICULO.UPDATE.SERVER_ERROR,
       );
 
     return newData;

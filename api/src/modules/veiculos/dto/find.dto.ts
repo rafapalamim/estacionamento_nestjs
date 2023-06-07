@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
+import TimestampsDTO from 'src/modules/@base/dto/timestamps.dto';
 
-export class FindVeiculoOutputDto {
+export class FindVeiculoOutput extends TimestampsDTO {
   @ApiProperty()
   id: number;
 
@@ -18,10 +19,4 @@ export class FindVeiculoOutputDto {
 
   @ApiProperty()
   tipo: string;
-
-  @ApiProperty({})
-  created_at: Date;
-
-  @ApiProperty()
-  updated_at: Date;
 }

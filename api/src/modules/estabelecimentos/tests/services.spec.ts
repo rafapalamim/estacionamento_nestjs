@@ -7,6 +7,7 @@ import EstabelecimentoUpdateService from '../services/update.service';
 import EstabelecimentoFindService from '../services/find.service';
 import EstabelecimentoDestroyService from '../services/destroy.service';
 import EstabelecimentoFindAllService from '../services/findAll.service';
+import { MessagesAPI } from 'src/utils/messages.helper';
 
 describe('EstabelecimentoServices', () => {
   let createService: EstabelecimentoCreateService;
@@ -159,7 +160,7 @@ describe('EstabelecimentoServices', () => {
 
   it('Deve lançar erro ao procurar um registro com ID inexistente', async () => {
     expect(async () => await findService.execute(1)).rejects.toThrowError(
-      'Não foi possível encontrar o estabelecimento',
+      MessagesAPI.ESTABELECIMENTO.FIND.NOT_FOUND,
     );
   });
 
@@ -182,7 +183,7 @@ describe('EstabelecimentoServices', () => {
 
   it('Deve lançar erro ao tentar deletar um registro com id inexistente', async () => {
     expect(async () => await destroyService.execute(1)).rejects.toThrowError(
-      'Não foi possível deletar o estabelecimento. O estabelecimento não existe',
+      MessagesAPI.ESTABELECIMENTO.DESTROY.NOT_FOUND,
     );
   });
 
@@ -216,7 +217,7 @@ describe('EstabelecimentoServices', () => {
 
   it('Não deve encontrar registros', async () => {
     expect(async () => await findAllService.execute({})).rejects.toThrowError(
-      'Nenhum estabelecimento encontrado',
+      MessagesAPI.ESTABELECIMENTO.FIND_ALL.NOT_FOUND,
     );
   });
 
