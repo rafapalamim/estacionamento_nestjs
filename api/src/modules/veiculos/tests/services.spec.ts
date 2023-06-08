@@ -8,6 +8,7 @@ import VeiculoDestroyService from '../services/destroy.service';
 import VeiculoFindAllService from '../services/findAll.service';
 import { veiculosProviders } from '../veiculos.providers';
 import { MessagesAPI } from 'src/utils/messages.helper';
+import { TipoVeiculoEnum } from 'src/modules/@base/enums/tipo.veiculo.enum';
 
 describe('VeiculoServices', () => {
   let createService: VeiculoCreateService;
@@ -46,7 +47,7 @@ describe('VeiculoServices', () => {
       modelo: 'Palio',
       cor: 'Prata',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     };
 
     const created = await createService.execute(input);
@@ -59,7 +60,7 @@ describe('VeiculoServices', () => {
       modelo: 'Palio',
       cor: 'Prata',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     };
 
     const updateInput = {
@@ -67,7 +68,7 @@ describe('VeiculoServices', () => {
       modelo: 'Toro',
       cor: 'Prata',
       placa: 'ABC1D34',
-      tipo: 'Picape',
+      tipo: TipoVeiculoEnum.CARRO,
     };
 
     const created = await createService.execute(createInput);
@@ -96,7 +97,7 @@ describe('VeiculoServices', () => {
       modelo: 'Palio',
       cor: 'Prata',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     };
 
     const updated = await updateService.execute(updateInput);
@@ -120,7 +121,7 @@ describe('VeiculoServices', () => {
       modelo: 'Palio',
       cor: 'Prata',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     };
 
     const created = await createService.execute(createInput);
@@ -152,7 +153,7 @@ describe('VeiculoServices', () => {
       modelo: 'Palio',
       cor: 'Prata',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     };
 
     const insert = await createService.execute(createInput);
@@ -172,7 +173,7 @@ describe('VeiculoServices', () => {
       modelo: 'Palio',
       cor: 'Prata',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     await createService.execute({
@@ -180,7 +181,7 @@ describe('VeiculoServices', () => {
       modelo: 'Palio',
       cor: 'Prata',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     const find = await findAllService.execute({});
@@ -204,7 +205,7 @@ describe('VeiculoServices', () => {
       modelo: 'Palio',
       cor: 'Prata',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     await createService.execute({
@@ -212,7 +213,7 @@ describe('VeiculoServices', () => {
       modelo: 'Palio',
       cor: 'Prata',
       placa: 'DEF1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     const find = await findAllService.execute({ placa: 'DEF1234' });

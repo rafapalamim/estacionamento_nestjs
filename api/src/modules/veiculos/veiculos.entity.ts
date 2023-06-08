@@ -1,5 +1,6 @@
 import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../@base/entities/base.entity';
+import { TipoVeiculoEnum } from '../@base/enums/tipo.veiculo.enum';
 
 @Entity('veiculos')
 export default class VeiculosEntity extends BaseEntity {
@@ -29,7 +30,7 @@ export default class VeiculosEntity extends BaseEntity {
 
   @Column({
     nullable: false,
-    length: 50,
+    enum: TipoVeiculoEnum,
   })
-  tipo: string;
+  tipo: TipoVeiculoEnum;
 }

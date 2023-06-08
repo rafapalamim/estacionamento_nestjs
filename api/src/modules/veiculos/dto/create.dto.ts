@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
+import { TipoVeiculoEnum } from 'src/modules/@base/enums/tipo.veiculo.enum';
 
 export class CreateVeiculoInput {
   @ApiProperty({
@@ -39,13 +40,13 @@ export class CreateVeiculoInput {
   placa: string;
 
   @ApiProperty({
-    example: 'Hatch',
-    maxLength: 50,
+    examples: ['CARRO', 'MOTO'],
+    type: TipoVeiculoEnum,
   })
   @IsNotEmpty({
     message: 'O tipo do veículo é um campo obrigatório',
   })
-  tipo: string;
+  tipo: TipoVeiculoEnum;
 }
 
 export class CreateVeiculoOutput {

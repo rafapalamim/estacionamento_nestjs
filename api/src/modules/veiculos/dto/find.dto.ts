@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import TimestampsDTO from 'src/modules/@base/dto/timestamps.dto';
+import { TipoVeiculoEnum } from 'src/modules/@base/enums/tipo.veiculo.enum';
 
 export class FindVeiculoOutput extends TimestampsDTO {
   @ApiProperty()
@@ -18,5 +19,5 @@ export class FindVeiculoOutput extends TimestampsDTO {
   placa: string;
 
   @ApiProperty()
-  tipo: string;
+  tipo: TipoVeiculoEnum;
 }

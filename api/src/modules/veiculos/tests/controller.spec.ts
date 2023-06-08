@@ -3,6 +3,7 @@ import { SQLiteModule } from 'src/database/modules/sqlite.module';
 import { VeiculosController } from '../veiculos.controller';
 import { veiculosProviders } from '../veiculos.providers';
 import { MessagesAPI } from 'src/utils/messages.helper';
+import { TipoVeiculoEnum } from 'src/modules/@base/enums/tipo.veiculo.enum';
 
 describe('VeiculoController', () => {
   let controller: VeiculosController;
@@ -27,7 +28,7 @@ describe('VeiculoController', () => {
       modelo: 'Palio',
       cor: 'Prata',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
     expect(create).toEqual({
       id: expect.any(Number),
@@ -40,7 +41,7 @@ describe('VeiculoController', () => {
       modelo: 'Palio',
       cor: 'Prata',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     const updated = await controller.update({
@@ -49,7 +50,7 @@ describe('VeiculoController', () => {
       modelo: 'Toro',
       cor: 'Vermelho',
       placa: 'DEF4567',
-      tipo: 'Picape',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     expect(updated.id).toBe(1);
@@ -72,7 +73,7 @@ describe('VeiculoController', () => {
       modelo: 'Palio',
       cor: 'Prata',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     };
 
     const updated = await controller.update(inputUpdate);
@@ -82,7 +83,7 @@ describe('VeiculoController', () => {
     expect(updated.modelo).toBe('Palio');
     expect(updated.cor).toBe('Prata');
     expect(updated.placa).toBe('ABC1234');
-    expect(updated.tipo).toBe('Hatch');
+    expect(updated.tipo).toBe(TipoVeiculoEnum.CARRO);
   });
 
   it('Não deve criar um novo registro utilizando o método update sendo que o ID não existe', async () => {
@@ -92,7 +93,7 @@ describe('VeiculoController', () => {
       modelo: 'Palio',
       cor: 'Prata',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     };
 
     expect(
@@ -106,7 +107,7 @@ describe('VeiculoController', () => {
       modelo: 'Palio',
       cor: 'Prata',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     const find = await controller.find(1);
@@ -136,7 +137,7 @@ describe('VeiculoController', () => {
       modelo: 'Palio',
       cor: 'Prata',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     await controller.create({
@@ -144,7 +145,7 @@ describe('VeiculoController', () => {
       modelo: 'Palio',
       cor: 'Prata',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     await controller.create({
@@ -152,7 +153,7 @@ describe('VeiculoController', () => {
       modelo: 'Palio',
       cor: 'Prata',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     const findAll = await controller.findAll({});
@@ -202,7 +203,7 @@ describe('VeiculoController', () => {
       modelo: 'Palio',
       cor: 'Prata',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     await controller.create({
@@ -210,7 +211,7 @@ describe('VeiculoController', () => {
       modelo: 'Palio',
       cor: 'Azul',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     await controller.create({
@@ -218,7 +219,7 @@ describe('VeiculoController', () => {
       modelo: 'Palio',
       cor: 'Vermelho',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     const findAll = await controller.findAll({ cor: 'Vermelho' });
@@ -236,7 +237,7 @@ describe('VeiculoController', () => {
       modelo: 'Palio',
       cor: 'Vermelho',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     await controller.create({
@@ -244,7 +245,7 @@ describe('VeiculoController', () => {
       modelo: 'Toro',
       cor: 'Vermelho',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     await controller.create({
@@ -252,7 +253,7 @@ describe('VeiculoController', () => {
       modelo: 'Toro',
       cor: 'Azul',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     const findAll = await controller.findAll({ modelo: 'Toro' });
@@ -269,7 +270,7 @@ describe('VeiculoController', () => {
       modelo: 'Toro',
       cor: 'Azul',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     await controller.create({
@@ -277,7 +278,7 @@ describe('VeiculoController', () => {
       modelo: 'Toro',
       cor: 'Azul',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     await controller.create({
@@ -285,7 +286,7 @@ describe('VeiculoController', () => {
       modelo: 'Toro',
       cor: 'Azul',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     expect(
@@ -299,7 +300,7 @@ describe('VeiculoController', () => {
       modelo: 'Toro',
       cor: 'Azul',
       placa: 'ABC1234',
-      tipo: 'Hatch',
+      tipo: TipoVeiculoEnum.CARRO,
     });
 
     const deleted = await controller.destroy(1);
