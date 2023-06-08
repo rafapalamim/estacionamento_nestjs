@@ -25,6 +25,7 @@ export default class VeiculosEntity extends BaseEntity {
   @Column({
     nullable: false,
     length: 7,
+    unique: true,
   })
   placa: string;
 
