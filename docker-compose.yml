@@ -22,7 +22,7 @@ services:
 
   db:
     container_name: estacionamento_db
-    image: mysql:8.0.33
+    image: mysql:5.7.42-debian
     volumes:
       - "estacionamento_mysql:/var/lib/mysql"
     networks:

@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -23,9 +24,11 @@ import { CreateVeiculoInput, CreateVeiculoOutput } from './dto/create.dto';
 import { UpdateVeiculoInput, UpdateVeiculoOutput } from './dto/update.dto';
 import { FindAllVeiculoInput, FindAllVeiculoOutput } from './dto/findAll.dto';
 import { FindVeiculoOutput } from './dto/find.dto';
+import { JwtAuthGuard } from '../autenticacao/guards/jwt.guard';
 
 @ApiTags('veiculos')
 @Controller('api/v1/veiculos')
+@UseGuards(JwtAuthGuard)
 export class VeiculosController {
   constructor(
     @Inject(VeiculoCreateService)
