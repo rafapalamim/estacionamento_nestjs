@@ -289,9 +289,10 @@ describe('VeiculoController', () => {
       tipo: TipoVeiculoEnum.CARRO,
     });
 
-    expect(
-      async () => await controller.findAll({ modelo: 'Gol' }),
-    ).rejects.toThrowError(MessagesAPI.VEICULO.FIND_ALL.NOT_FOUND);
+    const findAll = await controller.findAll({ modelo: 'Gol' });
+
+    expect(findAll.pagination.total).toBe(0);
+    expect(findAll.data).toEqual([]);
   });
 
   it('Deve remover um registro', async () => {

@@ -22,18 +22,28 @@ export default class EstabelecimentoFindAllService
     const paginaAtual = pagina || 0;
     const pular = paginaAtual * Constants.registrosPorPagina;
 
+    const filtroWhere: FindAllEstabelecimentoInput = {};
+    if (typeof params.nome !== 'undefined') {
+      filtroWhere['nome'] = params.nome;
+    }
+
+    if (typeof params.cnpj !== 'undefined') {
+      filtroWhere['cnpj'] = params.cnpj;
+    }
+
+    if (typeof params.endereco !== 'undefined') {
+      filtroWhere['endereco'] = params.endereco;
+    }
+
+    const filtroDeletados = params.ativo ?? false;
+
     const [result, total] = await this.repository.findAndCount({
-      where: { ...params },
+      where: filtroWhere,
+      withDeleted: filtroDeletados,
       order: { id: 'ASC' },
       take: Constants.registrosPorPagina,
       skip: pular,
     });
-
-    if (result.length < 1) {
-      throw new NotFoundException(
-        MessagesAPI.ESTABELECIMENTO.FIND_ALL.NOT_FOUND,
-      );
-    }
 
     return {
       data: result.map((estabelecimento: EstabelecimentosEntity) => {

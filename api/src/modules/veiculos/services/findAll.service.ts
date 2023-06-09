@@ -15,8 +15,24 @@ export default class VeiculoFindAllService
     const paginaAtual = pagina || 0;
     const pular = paginaAtual * Constants.registrosPorPagina;
 
+    const filtroWhere: FindAllVeiculoInput = {};
+    if (typeof params.placa !== 'undefined') {
+      filtroWhere['placa'] = params.placa;
+    }
+
+    if (typeof params.cor !== 'undefined') {
+      filtroWhere['cor'] = params.cor;
+    }
+
+    if (typeof params.modelo !== 'undefined') {
+      filtroWhere['modelo'] = params.modelo;
+    }
+
+    const filtroDeletados = params.ativo ?? false;
+
     const [result, total] = await this.repository.findAndCount({
-      where: { ...params },
+      where: filtroWhere,
+      withDeleted: filtroDeletados,
       order: { id: 'ASC' },
       take: Constants.registrosPorPagina,
       skip: pular,
