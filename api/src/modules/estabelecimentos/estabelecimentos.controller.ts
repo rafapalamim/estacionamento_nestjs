@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -32,9 +33,11 @@ import {
   FindAllEstabelecimentoInput,
   FindAllEstabelecimentoOutput,
 } from './dto/findAll.dto';
+import { JwtAuthGuard } from '../autenticacao/guards/jwt.guard';
 
 @ApiTags('estabelecimentos')
 @Controller('api/v1/estabelecimentos')
+@UseGuards(JwtAuthGuard)
 export class EstabelecimentosController {
   constructor(
     @Inject(EstabelecimentoCreateService)

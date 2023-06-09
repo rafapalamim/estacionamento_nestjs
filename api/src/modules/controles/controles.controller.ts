@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import EntradaCreateService from './entrada/services/create.service';
@@ -22,9 +23,11 @@ import {
   CreateEntradaInput,
   CreateEntradaOutput,
 } from './entrada/dto/create.dto';
+import { JwtAuthGuard } from '../autenticacao/guards/jwt.guard';
 
 @ApiTags('controles')
 @Controller('api/v1/controles')
+@UseGuards(JwtAuthGuard)
 export class ControlesController {
   constructor(
     @Inject(EntradaCreateService)
