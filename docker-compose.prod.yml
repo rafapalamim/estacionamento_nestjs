@@ -1,0 +1,30 @@
+version: '3'
+
+networks:
+  estacionamento:
+
+services:
+
+  db:
+    container_name: estacionamento_db
+    image: mysql:5.7.42-debian
+    networks:
+      - estacionamento
+    restart: always
+    ports:
+      - 3306:3306 # Para acessar pelo host
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+
+  api:
+    container_name: estacionamento_api
+    build:
+      context: .
+      dockerfile: ./.docker/api/Dockerfile.prod
+    ports:
+      - 3000:3000
+    networks:
+      - estacionamento
