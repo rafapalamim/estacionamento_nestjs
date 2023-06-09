@@ -2,36 +2,31 @@ import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../@base/entities/base.entity';
 import { TipoVeiculoEnum } from '../@base/enums/tipo.veiculo.enum';
 
-@Entity('veiculos')
-export default class VeiculosEntity extends BaseEntity {
+@Entity('controles')
+export default class ControlesEntity extends BaseEntity {
   @Column({
     nullable: false,
-    length: 100,
   })
-  marca: string;
+  estabelecimento_id: number;
 
   @Column({
     nullable: false,
-    length: 100,
   })
-  modelo: string;
+  veiculo_id: number;
 
   @Column({
     nullable: false,
-    length: 50,
+    type: String,
   })
-  cor: string;
+  veiculo_tipo: TipoVeiculoEnum;
 
   @Column({
     nullable: false,
-    length: 7,
-    unique: true,
   })
-  placa: string;
+  data_entrada: Date;
 
   @Column({
-    nullable: false,
-    enum: TipoVeiculoEnum,
+    nullable: true,
   })
-  tipo: TipoVeiculoEnum;
+  data_saida: Date | null;
 }
