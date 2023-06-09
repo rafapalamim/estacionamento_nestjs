@@ -13,7 +13,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import VeiculoCreateService from './services/create.service';
 import VeiculoUpdateService from './services/update.service';
 import VeiculoFindService from './services/find.service';
@@ -25,9 +25,11 @@ import { UpdateVeiculoInput, UpdateVeiculoOutput } from './dto/update.dto';
 import { FindAllVeiculoInput, FindAllVeiculoOutput } from './dto/findAll.dto';
 import { FindVeiculoOutput } from './dto/find.dto';
 import { JwtAuthGuard } from '../autenticacao/guards/jwt.guard';
+import { NotFoundOutput } from '../@base/dto/notFound.output';
 
 @ApiTags('veiculos')
-@Controller('api/v1/veiculos')
+@Controller('veiculos')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 export class VeiculosController {
   constructor(
@@ -71,6 +73,11 @@ export class VeiculosController {
     type: UpdateVeiculoOutput,
   })
   @ApiResponse({
+    status: 201,
+    description: 'Veículo criado',
+    type: UpdateVeiculoOutput,
+  })
+  @ApiResponse({
     status: 404,
     description: 'Veículo não encontrado',
   })
@@ -91,6 +98,7 @@ export class VeiculosController {
   @ApiResponse({
     status: 404,
     description: 'Veículo não encontrado',
+    type: NotFoundOutput,
   })
   async find(@Param('id') id: number): Promise<FindVeiculoOutput> {
     return await this.findService.execute(id);
@@ -105,6 +113,7 @@ export class VeiculosController {
   @ApiResponse({
     status: 404,
     description: 'Nenhum veículo encontrado',
+    type: NotFoundOutput,
   })
   async findAll(
     @Query() query: FindAllVeiculoInput,
@@ -121,6 +130,7 @@ export class VeiculosController {
   @ApiResponse({
     status: 404,
     description: 'Não foi possível deletar o veículo. O veículo não existe',
+    type: NotFoundOutput,
   })
   @ApiResponse({
     status: 500,

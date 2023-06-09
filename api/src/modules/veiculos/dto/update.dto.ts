@@ -4,7 +4,11 @@ import { CreateVeiculoInput } from './create.dto';
 import { TipoVeiculoEnum } from 'src/modules/@base/enums/tipo.veiculo.enum';
 
 export class UpdateVeiculoInput extends CreateVeiculoInput {
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+    description:
+      'Informe o ID caso queira atualizar o recurso. Se não informar, o recurso será criado',
+  })
   id?: number;
 }
 
