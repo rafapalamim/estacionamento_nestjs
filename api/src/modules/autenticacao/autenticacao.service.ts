@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { FindUsuarioOutput } from '../usuarios/dto/find.dto';
+import { ParseLoginToToken, TokenOuput } from './dto/login.dto';
 
 @Injectable()
 export class AutenticacaoService {
@@ -27,7 +27,7 @@ export class AutenticacaoService {
     return user;
   }
 
-  async login(user: FindUsuarioOutput) {
+  async login(user: ParseLoginToToken): Promise<TokenOuput> {
     const payload = { email: user.email, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
