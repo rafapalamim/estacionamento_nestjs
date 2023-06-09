@@ -61,6 +61,7 @@ export default class EntradaCreateService
     const disponibilidade: FindAllControleOutput =
       await this.controleFindAllService.execute({
         em_aberto: true,
+        cancelados: false,
         estabelecimento_id: estabelecimento_id,
         veiculo_tipo: veiculo_tipo,
       });

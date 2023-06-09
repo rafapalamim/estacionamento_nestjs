@@ -20,6 +20,10 @@ export default class ControleDestroyService
       throw new NotFoundException(MessagesAPI.CONTROLE.DESTROY.NOT_FOUND);
     }
 
+    if (find.deleted_at !== null) {
+      throw new NotFoundException(MessagesAPI.CONTROLE.DESTROY.BAD_REQUEST);
+    }
+
     const deleted = await this.repository.softDelete({ id });
 
     if (deleted.affected < 1) {

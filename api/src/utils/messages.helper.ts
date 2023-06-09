@@ -68,6 +68,8 @@ const MessagesControle = {
   },
   DESTROY: {
     SERVER_ERROR: 'Não foi possível excluir a entrada',
+    BAD_REQUEST:
+      'Não foi possível excluir a entrada. A entrada já está excluida',
     NOT_FOUND:
       'Não foi possível excluir a entrada. A entrada não foi encontrada',
   },

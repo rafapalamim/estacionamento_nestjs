@@ -478,4 +478,18 @@ describe('ControleServices', () => {
       MessagesAPI.CONTROLE.DESTROY.NOT_FOUND,
     );
   });
+
+  it('Não deve cancelar uma entrada mais de uma vez', async () => {
+    const entrada = await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'ABC1234',
+      veiculo_tipo: TipoVeiculoEnum.CARRO,
+    });
+
+    await destroyService.execute(entrada.id);
+
+    expect(async () => destroyService.execute(entrada.id)).rejects.toThrowError(
+      MessagesAPI.CONTROLE.DESTROY.BAD_REQUEST,
+    );
+  });
 });
