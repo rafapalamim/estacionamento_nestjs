@@ -44,7 +44,7 @@ import { Unauthorized } from '../@base/dto/Unauthorized.output';
 @UseGuards(JwtAuthGuard)
 @ApiResponse({
   status: 401,
-  description: 'Usuário e/ou senha incorretos',
+  description: 'Token JWT não informado',
   type: Unauthorized,
 })
 @ApiBearerAuth()

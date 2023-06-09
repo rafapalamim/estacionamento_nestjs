@@ -4,7 +4,7 @@ import { TipoVeiculoEnum } from 'src/modules/@base/enums/tipo.veiculo.enum';
 
 export class CreateEntradaInput {
   @ApiProperty({
-    example: 1,
+    required: true,
   })
   @IsNotEmpty({
     message: 'O ID do estabelecimento é um campo obrigatório',
@@ -14,22 +14,36 @@ export class CreateEntradaInput {
   @ApiProperty({
     example: 'ABC1234',
     maxLength: 7,
+    required: true,
   })
   @IsNotEmpty({
     message: 'A placa do veículo é um campo obrigatório',
   })
   veiculo_placa: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: true,
+    examples: ['MOTO', 'CARRO'],
+    enum: TipoVeiculoEnum,
+  })
   veiculo_tipo: TipoVeiculoEnum;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+    description: 'Informe a marca para cadastrar o veículo (caso não exista)',
+  })
   veiculo_marca?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+    description: 'Informe o modelo para cadastrar o veículo (caso não exista)',
+  })
   veiculo_modelo?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+    description: 'Informe a cor para cadastrar o veículo (caso não exista)',
+  })
   veiculo_cor?: string;
 }
 

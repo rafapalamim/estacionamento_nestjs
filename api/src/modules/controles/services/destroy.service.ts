@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -24,7 +25,7 @@ export default class ControleDestroyService
     }
 
     if (find.deleted_at !== null) {
-      throw new NotFoundException(MessagesAPI.CONTROLE.DESTROY.BAD_REQUEST);
+      throw new BadRequestException(MessagesAPI.CONTROLE.DESTROY.BAD_REQUEST);
     }
 
     const deleted = await this.repository.softDelete({ id });

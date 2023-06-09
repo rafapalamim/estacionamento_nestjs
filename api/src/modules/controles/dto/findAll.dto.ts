@@ -26,6 +26,7 @@ export class FindAllControleInput {
 export class FindAllControleOutput {
   @ApiProperty({
     type: [FindControleOutput],
+    required: false,
   })
   data: FindControleOutput[];
 
