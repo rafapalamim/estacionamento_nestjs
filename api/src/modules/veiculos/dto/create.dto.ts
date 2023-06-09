@@ -41,7 +41,7 @@ export class CreateVeiculoInput {
 
   @ApiProperty({
     examples: ['CARRO', 'MOTO'],
-    type: TipoVeiculoEnum,
+    enum: TipoVeiculoEnum,
   })
   @IsNotEmpty({
     message: 'O tipo do veículo é um campo obrigatório',

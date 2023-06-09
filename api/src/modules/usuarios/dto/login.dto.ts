@@ -1,9 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class LoginUsuarioInput {
-  @ApiProperty()
+  @ApiProperty({
+    default: 'admin@mail.com',
+    required: true,
+  })
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    default: 'password',
+    required: true,
+  })
   senha: string;
 }

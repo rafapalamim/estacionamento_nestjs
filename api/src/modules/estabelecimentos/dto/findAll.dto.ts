@@ -3,19 +3,30 @@ import { PaginationDTO } from 'src/modules/@base/dto/pagination.dto';
 import TimestampsDTO from 'src/modules/@base/dto/timestamps.dto';
 
 export class FindAllEstabelecimentoInput {
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   nome?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   cnpj?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   endereco?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   ativo?: boolean;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+    default: 0,
+  })
   pagina?: number;
 }
 

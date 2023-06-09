@@ -4,19 +4,29 @@ import TimestampsDTO from 'src/modules/@base/dto/timestamps.dto';
 import { TipoVeiculoEnum } from 'src/modules/@base/enums/tipo.veiculo.enum';
 
 export class FindAllVeiculoInput {
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   placa?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   cor?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   modelo?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   ativo?: boolean;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   pagina?: number;
 }
 
@@ -43,6 +53,7 @@ class VeiculosDTO extends TimestampsDTO {
 export class FindAllVeiculoOutput {
   @ApiProperty({
     type: [VeiculosDTO],
+    required: false,
   })
   data: VeiculosDTO[];
 

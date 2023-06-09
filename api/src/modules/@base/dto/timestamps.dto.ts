@@ -7,6 +7,9 @@ export default class TimestampsDTO {
   @ApiProperty()
   updated_at: Date;
 
-  @ApiProperty()
+  @ApiProperty({
+    default: null,
+    required: false,
+  })
   deleted_at: Date | null;
 }
