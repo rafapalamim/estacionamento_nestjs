@@ -136,7 +136,7 @@ describe('VeiculoController', () => {
       marca: 'Fiat',
       modelo: 'Palio',
       cor: 'Prata',
-      placa: 'ABC1234',
+      placa: 'ABC1111',
       tipo: TipoVeiculoEnum.CARRO,
     });
 
@@ -144,7 +144,7 @@ describe('VeiculoController', () => {
       marca: 'Fiat',
       modelo: 'Palio',
       cor: 'Prata',
-      placa: 'ABC1234',
+      placa: 'ABC2222',
       tipo: TipoVeiculoEnum.CARRO,
     });
 
@@ -152,7 +152,7 @@ describe('VeiculoController', () => {
       marca: 'Fiat',
       modelo: 'Palio',
       cor: 'Prata',
-      placa: 'ABC1234',
+      placa: 'ABC3333',
       tipo: TipoVeiculoEnum.CARRO,
     });
 
@@ -202,7 +202,7 @@ describe('VeiculoController', () => {
       marca: 'Fiat',
       modelo: 'Palio',
       cor: 'Prata',
-      placa: 'ABC1234',
+      placa: 'ABC1111',
       tipo: TipoVeiculoEnum.CARRO,
     });
 
@@ -210,7 +210,7 @@ describe('VeiculoController', () => {
       marca: 'Fiat',
       modelo: 'Palio',
       cor: 'Azul',
-      placa: 'ABC1234',
+      placa: 'ABC2222',
       tipo: TipoVeiculoEnum.CARRO,
     });
 
@@ -218,7 +218,7 @@ describe('VeiculoController', () => {
       marca: 'Fiat',
       modelo: 'Palio',
       cor: 'Vermelho',
-      placa: 'ABC1234',
+      placa: 'ABC3333',
       tipo: TipoVeiculoEnum.CARRO,
     });
 
@@ -236,7 +236,7 @@ describe('VeiculoController', () => {
       marca: 'Fiat',
       modelo: 'Palio',
       cor: 'Vermelho',
-      placa: 'ABC1234',
+      placa: 'ABC1111',
       tipo: TipoVeiculoEnum.CARRO,
     });
 
@@ -244,7 +244,7 @@ describe('VeiculoController', () => {
       marca: 'Fiat',
       modelo: 'Toro',
       cor: 'Vermelho',
-      placa: 'ABC1234',
+      placa: 'ABC2222',
       tipo: TipoVeiculoEnum.CARRO,
     });
 
@@ -252,7 +252,7 @@ describe('VeiculoController', () => {
       marca: 'Fiat',
       modelo: 'Toro',
       cor: 'Azul',
-      placa: 'ABC1234',
+      placa: 'ABC3333',
       tipo: TipoVeiculoEnum.CARRO,
     });
 
@@ -269,7 +269,7 @@ describe('VeiculoController', () => {
       marca: 'Fiat',
       modelo: 'Toro',
       cor: 'Azul',
-      placa: 'ABC1234',
+      placa: 'ABC1111',
       tipo: TipoVeiculoEnum.CARRO,
     });
 
@@ -277,7 +277,7 @@ describe('VeiculoController', () => {
       marca: 'Fiat',
       modelo: 'Toro',
       cor: 'Azul',
-      placa: 'ABC1234',
+      placa: 'ABC2222',
       tipo: TipoVeiculoEnum.CARRO,
     });
 
@@ -285,7 +285,7 @@ describe('VeiculoController', () => {
       marca: 'Fiat',
       modelo: 'Toro',
       cor: 'Azul',
-      placa: 'ABC1234',
+      placa: 'ABC3333',
       tipo: TipoVeiculoEnum.CARRO,
     });
 

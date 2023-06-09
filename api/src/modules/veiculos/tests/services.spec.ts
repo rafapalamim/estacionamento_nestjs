@@ -46,7 +46,7 @@ describe('VeiculoServices', () => {
       marca: 'Fiat',
       modelo: 'Palio',
       cor: 'Prata',
-      placa: 'ABC1234',
+      placa: 'ABC1111',
       tipo: TipoVeiculoEnum.CARRO,
     };
 
@@ -172,7 +172,7 @@ describe('VeiculoServices', () => {
       marca: 'Fiat',
       modelo: 'Palio',
       cor: 'Prata',
-      placa: 'ABC1234',
+      placa: 'ABC1111',
       tipo: TipoVeiculoEnum.CARRO,
     });
 
@@ -180,7 +180,7 @@ describe('VeiculoServices', () => {
       marca: 'Fiat',
       modelo: 'Palio',
       cor: 'Prata',
-      placa: 'ABC1234',
+      placa: 'ABC2222',
       tipo: TipoVeiculoEnum.CARRO,
     });
 
