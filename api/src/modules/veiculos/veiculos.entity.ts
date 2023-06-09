@@ -30,6 +30,7 @@ export default class VeiculosEntity extends BaseEntity {
   placa: string;
 
   @Column({
+    type: 'enum',
     nullable: false,
     enum: TipoVeiculoEnum,
   })

@@ -1,19 +1,11 @@
 import { DataSource } from 'typeorm';
+import { sqliteConfig } from '../config/sqlite.config';
 
 export const sqliteProvider = [
   {
     provide: 'DATA_SOURCE',
     useFactory: async () => {
-      const dataSource = new DataSource({
-        type: 'sqlite',
-        database: ':memory:',
-        entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
-        dropSchema: true,
-        synchronize: true,
-        logging: false,
-      });
-
-      return dataSource.initialize();
+      return new DataSource(sqliteConfig).initialize();
     },
   },
 ];
