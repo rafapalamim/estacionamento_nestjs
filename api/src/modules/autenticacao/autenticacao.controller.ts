@@ -4,6 +4,7 @@ import { LocalAuthGuard } from './guards/local.guard';
 import { AutenticacaoService } from './autenticacao.service';
 import { LoginUsuarioInput } from '../usuarios/dto/login.dto';
 import { TokenOuput } from './dto/login.dto';
+import { Unauthorized } from '../@base/dto/Unauthorized.output';
 
 type UserLogin = {
   id: number;
@@ -25,6 +26,7 @@ export class AutenticacaoController {
   @ApiResponse({
     status: 401,
     description: 'Usuário e/ou senha incorretos',
+    type: Unauthorized,
   })
   async login(@Body() data: LoginUsuarioInput, @Request() req: UserLogin) {
     return this.authService.login(req);

@@ -13,11 +13,12 @@ async function bootstrap() {
     .setDescription('API criada no teste Dr. Consulta')
     .setVersion('v1')
     .addBearerAuth()
-    .setBasePath('api/v1')
-    .addServer('http://localhost:3000', 'Desenvolvimento')
+    .addServer('http://localhost:3000/api/v1', 'Desenvolvimento')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/v1', app, document);
+
+  app.setGlobalPrefix('api/v1');
 
   await app.listen(3000);
 }

@@ -13,7 +13,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import EstabelecimentoCreateService from './services/create.service';
 import EstabelecimentoUpdateService from './services/update.service';
 import EstabelecimentoFindService from './services/find.service';
@@ -28,16 +28,26 @@ import {
   UpdateEstabelecimentoInput,
   UpdateEstabelecimentoOutput,
 } from './dto/update.dto';
-import { FindEstabelecimentoOutput } from './dto/find.dto';
+import {
+  EstabelecimentoNotFound,
+  FindEstabelecimentoOutput,
+} from './dto/find.dto';
 import {
   FindAllEstabelecimentoInput,
   FindAllEstabelecimentoOutput,
 } from './dto/findAll.dto';
 import { JwtAuthGuard } from '../autenticacao/guards/jwt.guard';
+import { Unauthorized } from '../@base/dto/Unauthorized.output';
 
 @ApiTags('estabelecimentos')
-@Controller('api/v1/estabelecimentos')
+@Controller('estabelecimentos')
 @UseGuards(JwtAuthGuard)
+@ApiResponse({
+  status: 401,
+  description: 'Usuário e/ou senha incorretos',
+  type: Unauthorized,
+})
+@ApiBearerAuth()
 export class EstabelecimentosController {
   constructor(
     @Inject(EstabelecimentoCreateService)
@@ -82,6 +92,16 @@ export class EstabelecimentosController {
     type: UpdateEstabelecimentoOutput,
   })
   @ApiResponse({
+    status: 201,
+    description: 'Estabelecimento criado',
+    type: UpdateEstabelecimentoOutput,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Corpo da requisição inválido',
+    type: ThrowableError,
+  })
+  @ApiResponse({
     status: 404,
     description: 'Estabelecimento não encontrado',
   })
@@ -104,6 +124,7 @@ export class EstabelecimentosController {
   @ApiResponse({
     status: 404,
     description: 'Estabelecimento não encontrado',
+    type: EstabelecimentoNotFound,
   })
   async find(@Param('id') id: number): Promise<FindEstabelecimentoOutput> {
     return await this.findService.execute(id);
@@ -113,7 +134,7 @@ export class EstabelecimentosController {
   @ApiResponse({
     status: 200,
     description: 'Estabelecimento(s) encontrado(s)',
-    type: FindAllEstabelecimentoInput,
+    type: FindAllEstabelecimentoOutput,
   })
   @ApiResponse({
     status: 404,

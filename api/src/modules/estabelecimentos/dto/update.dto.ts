@@ -3,7 +3,11 @@ import { CreateEstabelecimentoInput } from './create.dto';
 import TimestampsDTO from 'src/modules/@base/dto/timestamps.dto';
 
 export class UpdateEstabelecimentoInput extends CreateEstabelecimentoInput {
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+    description:
+      'Informe o ID caso queira atualizar o registro. Caso não informe, o recurso será criado',
+  })
   id?: number;
 }
 
