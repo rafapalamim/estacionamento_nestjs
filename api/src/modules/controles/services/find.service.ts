@@ -11,7 +11,10 @@ export default class ControleFindService
   implements IFindService<FindControleOutput>
 {
   async execute(id: number): Promise<FindControleOutput> {
-    const find = await this.repository.findOneBy({ id });
+    const find = await this.repository.findOne({
+      where: { id },
+      withDeleted: true,
+    });
 
     if (!find) throw new NotFoundException(MessagesAPI.CONTROLE.FIND.NOT_FOUND);
 

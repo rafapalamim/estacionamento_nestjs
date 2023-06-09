@@ -14,13 +14,13 @@ export class FindAllControleInput {
   veiculo_tipo?: TipoVeiculoEnum;
 
   @ApiProperty()
-  em_aberto?: boolean = true;
-
-  @ApiProperty()
-  cancelados?: boolean = false;
-
-  @ApiProperty()
   pagina?: number;
+
+  @ApiProperty()
+  em_aberto?: boolean;
+
+  @ApiProperty()
+  cancelados?: boolean;
 }
 
 export class FindAllControleOutput {

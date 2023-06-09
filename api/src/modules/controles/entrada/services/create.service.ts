@@ -65,9 +65,10 @@ export default class EntradaCreateService
         veiculo_tipo: veiculo_tipo,
       });
 
-    if (disponibilidade.data.length >= quantidadeMaxima) {
+    if (disponibilidade.pagination.total + 1 > quantidadeMaxima) {
       throw new BadRequestException(MessagesAPI.CONTROLE.CREATE.LIMIT);
     }
+
     const listaVeiculos = await this.veiculoFindAllService.execute({
       placa: veiculo_placa,
     });
@@ -76,12 +77,16 @@ export default class EntradaCreateService
 
     if (listaVeiculos.data.length < 1) {
       if (Object.entries(veiculo_data).length !== 3) {
-        throw new BadRequestException('teste');
+        throw new BadRequestException(
+          MessagesAPI.CONTROLE.CREATE.VEHICLE_EMPTY_DATA,
+        );
       }
 
       Object.entries(veiculo_data).map((field) => {
         if (field[1].trim() === '') {
-          throw new BadRequestException('teste');
+          throw new BadRequestException(
+            MessagesAPI.CONTROLE.CREATE.VEHICLE_WRONG_DATA,
+          );
         }
       });
 
@@ -103,6 +108,17 @@ export default class EntradaCreateService
       };
     } else {
       veiculo = listaVeiculos.data[0];
+
+      const temEntradaVigente = await this.controleFindAllService.execute({
+        em_aberto: true,
+        veiculo_id: veiculo.id,
+      });
+
+      if (temEntradaVigente.pagination.total >= 1) {
+        throw new BadRequestException(
+          MessagesAPI.CONTROLE.CREATE.VEHICLE_INSIDE_COMPANY,
+        );
+      }
     }
 
     const entrada = await this.repository.insert({

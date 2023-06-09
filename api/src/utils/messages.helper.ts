@@ -57,6 +57,8 @@ const MessagesControle = {
       'Não foi possível salvar a entrada. Os dados do novo veículo estão incorretos',
     VEHICLE_EMPTY_DATA:
       'Não foi possível salvar a entrada. Os dados do novo veículo não foram informados',
+    VEHICLE_INSIDE_COMPANY:
+      'O veículo está com uma entrada sem saída. Encerre a anterior para liberar',
   },
   UPDATE: {
     SERVER_ERROR: 'Não foi possível incluir a saída do veículo',

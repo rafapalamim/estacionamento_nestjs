@@ -30,8 +30,8 @@ describe('ControleServices', () => {
         nome: 'Estabelecimento',
         cnpj: '12345678910000',
         endereco: 'Rua dois, 1000',
-        quantidade_vagas_carros: 1,
-        quantidade_vagas_motos: 1,
+        quantidade_vagas_carros: 2,
+        quantidade_vagas_motos: 2,
         telefone: '5511988884444',
         created_at: new Date(),
         updated_at: new Date(),
@@ -43,14 +43,14 @@ describe('ControleServices', () => {
   const mockVeiculoCreateService = {
     execute: jest.fn().mockImplementation(() => {
       return {
-        id: 1,
+        id: Date.now(),
       } as CreateVeiculoOutput;
     }),
   };
 
   const mockVeiculoFindAllService = {
     execute: jest.fn().mockImplementation((data: FindAllVeiculoInput) => {
-      if (data.placa != 'ABC1234') {
+      if (data.placa == 'ABC9999') {
         return {
           data: [],
           pagination: {
@@ -64,10 +64,10 @@ describe('ControleServices', () => {
       return {
         data: [
           {
-            id: 1,
+            id: data.placa === 'CCC1111' ? 1 : Date.now(),
             marca: 'Fiat',
             modelo: 'Palio',
-            placa: 'ABC1234',
+            placa: data.placa,
             cor: 'Azul',
             tipo: 'CARRO',
             created_at: new Date(),
@@ -156,21 +156,107 @@ describe('ControleServices', () => {
     expect(entrada.id).toEqual(expect.any(Number));
   });
 
-  // Não deve registrar uma entrada enquanto o veículo estiver com uma entrada vigente...
+  it('Não deve registrar uma entrada enquanto o veículo estiver com uma entrada vigente (em aberto)', async () => {
+    await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'CCC1111',
+      veiculo_tipo: TipoVeiculoEnum.CARRO,
+    });
 
-  // Não deve aceitar registrar uma entrada caso o limite do estabelecimento tenha sido alcançado...
+    expect(
+      async () =>
+        await createService.execute({
+          estabelecimento_id: 1,
+          veiculo_placa: 'CCC1111',
+          veiculo_tipo: TipoVeiculoEnum.CARRO,
+        }),
+    ).rejects.toThrowError(MessagesAPI.CONTROLE.CREATE.VEHICLE_INSIDE_COMPANY);
+  });
 
-  // it('Não deve criar uma entrada informando incorretamente os dados de um novo veículo', async () => {
-  //   expect(async () => {
-  //     await createService.execute({
-  //       estabelecimento_id: 1,
-  //       veiculo_placa: 'ABC1235',
-  //       veiculo_tipo: TipoVeiculoEnum.CARRO,
-  //     });
-  //   }).rejects.toThrowError(
-  //     'Não foi possível salvar a entrada. Os dados do novo veículo não foram informados',
-  //   );
-  // });
+  it('Não deve aceitar registrar uma entrada caso o limite do estabelecimento tenha sido alcançado', async () => {
+    await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'ABC1111',
+      veiculo_tipo: TipoVeiculoEnum.CARRO,
+    });
+
+    await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'ABC2222',
+      veiculo_tipo: TipoVeiculoEnum.CARRO,
+    });
+
+    expect(
+      async () =>
+        await createService.execute({
+          estabelecimento_id: 1,
+          veiculo_placa: 'ABC3333',
+          veiculo_tipo: TipoVeiculoEnum.CARRO,
+        }),
+    ).rejects.toThrowError(MessagesAPI.CONTROLE.CREATE.LIMIT);
+  });
+
+  it('Deve registrar uma entrada informando dados para a criação de um veículo', async () => {
+    const entrada = await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'ABC9999',
+      veiculo_tipo: TipoVeiculoEnum.CARRO,
+      veiculo_cor: 'Azul',
+      veiculo_marca: 'Fiat',
+      veiculo_modelo: 'Palio',
+    });
+
+    expect(entrada.id).toEqual(expect.any(Number));
+  });
+
+  it('Não deve registrar uma entrada informando dados incorretos para a criação de um veículo', async () => {
+    expect(
+      async () =>
+        await createService.execute({
+          estabelecimento_id: 1,
+          veiculo_placa: 'ABC9999',
+          veiculo_tipo: TipoVeiculoEnum.CARRO,
+        }),
+    ).rejects.toThrowError(MessagesAPI.CONTROLE.CREATE.VEHICLE_EMPTY_DATA);
+  });
+
+  it('Não deve registrar uma entrada informando dados incorretos (em branca) para a criação de um veículo', async () => {
+    expect(
+      async () =>
+        await createService.execute({
+          estabelecimento_id: 1,
+          veiculo_placa: 'ABC9999',
+          veiculo_tipo: TipoVeiculoEnum.CARRO,
+          veiculo_cor: '',
+          veiculo_marca: '',
+          veiculo_modelo: '',
+        }),
+    ).rejects.toThrowError(MessagesAPI.CONTROLE.CREATE.VEHICLE_WRONG_DATA);
+
+    expect(
+      async () =>
+        await createService.execute({
+          estabelecimento_id: 1,
+          veiculo_placa: 'ABC9999',
+          veiculo_tipo: TipoVeiculoEnum.CARRO,
+          veiculo_cor: 'X',
+          veiculo_marca: '',
+          veiculo_modelo: '',
+        }),
+    ).rejects.toThrowError(MessagesAPI.CONTROLE.CREATE.VEHICLE_WRONG_DATA);
+
+    expect(
+      async () =>
+        await createService.execute({
+          estabelecimento_id: 1,
+          veiculo_placa: 'ABC9999',
+          veiculo_tipo: TipoVeiculoEnum.CARRO,
+          veiculo_cor: 'X',
+          veiculo_marca: 'P',
+          veiculo_modelo: '',
+        }),
+    ).rejects.toThrowError(MessagesAPI.CONTROLE.CREATE.VEHICLE_WRONG_DATA);
+  });
 
   it('Deve registar a saída', async () => {
     const entrada = await createService.execute({
@@ -232,21 +318,164 @@ describe('ControleServices', () => {
     );
   });
 
-  it('Deve encontrar todas as entrada sem filtro algum', async () => {
+  it('Deve encontrar todas as entradas válidas sem filtro algum', async () => {
     await createService.execute({
       estabelecimento_id: 1,
-      veiculo_placa: 'ABC1234',
+      veiculo_placa: 'ABC1111',
       veiculo_tipo: TipoVeiculoEnum.CARRO,
     });
 
     await createService.execute({
       estabelecimento_id: 1,
-      veiculo_placa: 'ABC1234',
+      veiculo_placa: 'ABC2222',
       veiculo_tipo: TipoVeiculoEnum.MOTO,
     });
 
+    await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'ABC3333',
+      veiculo_tipo: TipoVeiculoEnum.MOTO,
+    });
+
+    await updateService.execute(1);
+    await updateService.execute(2);
+
     const findAll = await findAllService.execute({});
 
-    console.log(findAll);
+    expect(findAll.pagination.total).toBe(3);
+  });
+
+  it('Deve encontrar todas as entradas sem saída', async () => {
+    await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'ABC1111',
+      veiculo_tipo: TipoVeiculoEnum.CARRO,
+    });
+
+    await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'ABC2222',
+      veiculo_tipo: TipoVeiculoEnum.MOTO,
+    });
+
+    await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'ABC3333',
+      veiculo_tipo: TipoVeiculoEnum.MOTO,
+    });
+
+    await updateService.execute(1);
+    await updateService.execute(2);
+
+    const findAll = await findAllService.execute({ em_aberto: true });
+
+    expect(findAll.pagination.total).toBe(1);
+    expect(findAll.data[0].id).toBe(3);
+  });
+
+  it('Deve encontrar todas as entradas apenas com saída', async () => {
+    await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'ABC1111',
+      veiculo_tipo: TipoVeiculoEnum.CARRO,
+    });
+
+    await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'ABC2222',
+      veiculo_tipo: TipoVeiculoEnum.MOTO,
+    });
+
+    await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'ABC3333',
+      veiculo_tipo: TipoVeiculoEnum.MOTO,
+    });
+
+    await updateService.execute(1);
+
+    const findAll = await findAllService.execute({ em_aberto: false });
+
+    expect(findAll.pagination.total).toBe(1);
+    expect(findAll.data[0].id).toBe(1);
+  });
+
+  it('Deve encontrar todas as entradas, até as canceladas', async () => {
+    await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'ABC1111',
+      veiculo_tipo: TipoVeiculoEnum.CARRO,
+    });
+
+    await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'ABC2222',
+      veiculo_tipo: TipoVeiculoEnum.MOTO,
+    });
+
+    await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'ABC3333',
+      veiculo_tipo: TipoVeiculoEnum.MOTO,
+    });
+
+    await updateService.execute(1);
+    await destroyService.execute(2);
+
+    const findAll = await findAllService.execute({ cancelados: true });
+
+    expect(findAll.pagination.total).toBe(3);
+  });
+
+  it('Deve encontrar todas as entradas, menos as canceladas', async () => {
+    await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'ABC1111',
+      veiculo_tipo: TipoVeiculoEnum.CARRO,
+    });
+
+    await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'ABC2222',
+      veiculo_tipo: TipoVeiculoEnum.MOTO,
+    });
+
+    await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'ABC3333',
+      veiculo_tipo: TipoVeiculoEnum.MOTO,
+    });
+
+    await destroyService.execute(1);
+    await destroyService.execute(2);
+
+    const findAll = await findAllService.execute({});
+
+    expect(findAll.pagination.total).toBe(1);
+  });
+
+  it('Deve cancelar uma entrada', async () => {
+    const entrada = await createService.execute({
+      estabelecimento_id: 1,
+      veiculo_placa: 'ABC1234',
+      veiculo_tipo: TipoVeiculoEnum.CARRO,
+    });
+
+    const deleted = await destroyService.execute(entrada.id);
+    expect(deleted).toBeUndefined();
+
+    const find = await findAllService.execute({
+      estabelecimento_id: 1,
+      cancelados: true,
+    });
+
+    expect(find.data.length).toBe(1);
+    expect(find.data[0].deleted_at).toEqual(expect.any(Date));
+  });
+
+  it('Não deve cancelar uma entrada com ID inexistente', async () => {
+    expect(async () => await destroyService.execute(1)).rejects.toThrowError(
+      MessagesAPI.CONTROLE.DESTROY.NOT_FOUND,
+    );
   });
 });

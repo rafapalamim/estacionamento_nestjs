@@ -6,6 +6,7 @@ import {
 import BaseService from 'src/modules/@base/services/service.base';
 import ControlesEntity from '../controles.entity';
 import { IDestroyService } from 'src/modules/@base/services/destroy.interface';
+import { MessagesAPI } from 'src/utils/messages.helper';
 
 @Injectable()
 export default class ControleDestroyService
@@ -16,13 +17,15 @@ export default class ControleDestroyService
     const find = await this.repository.findOneBy({ id });
 
     if (!find) {
-      throw new NotFoundException('');
+      throw new NotFoundException(MessagesAPI.CONTROLE.DESTROY.NOT_FOUND);
     }
 
     const deleted = await this.repository.softDelete({ id });
 
     if (deleted.affected < 1) {
-      throw new InternalServerErrorException('');
+      throw new InternalServerErrorException(
+        MessagesAPI.CONTROLE.DESTROY.SERVER_ERROR,
+      );
     }
   }
 }

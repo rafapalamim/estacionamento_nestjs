@@ -19,22 +19,28 @@ export default class ControleFindAllService
     const paginaAtual = pagina || 0;
     const pular = paginaAtual * Constants.registrosPorPagina;
 
-    const whereClause: FindAllControleInput = {};
+    const filtroWhere: FindAllControleInput = {};
+    if (typeof params.em_aberto !== 'undefined') {
+      filtroWhere['data_saida'] = params.em_aberto ? IsNull() : Not(IsNull());
+    }
 
-    whereClause['data_saida'] = params.em_aberto ? IsNull() : Not(IsNull());
-    whereClause['deleted_at'] = params.cancelados ? Not(IsNull()) : IsNull();
+    if (typeof params.estabelecimento_id !== 'undefined') {
+      filtroWhere['estabelecimento_id'] = params.estabelecimento_id;
+    }
 
-    if (params.estabelecimento_id)
-      whereClause['estabelecimento_id'] = params.estabelecimento_id;
+    if (typeof params.veiculo_id !== 'undefined') {
+      filtroWhere['veiculo_id'] = params.veiculo_id;
+    }
 
-    if (params.veiculo_id) whereClause['veiculo_id'] = params.veiculo_id;
+    if (typeof params.veiculo_tipo !== 'undefined') {
+      filtroWhere['veiculo_tipo'] = params.veiculo_tipo;
+    }
 
-    if (params.veiculo_tipo) whereClause['veiculo_tipo'] = params.veiculo_tipo;
-
-    console.log(whereClause);
+    const filtroDeletados = params.cancelados ?? false;
 
     const [result, total] = await this.repository.findAndCount({
-      where: whereClause,
+      where: filtroWhere,
+      withDeleted: filtroDeletados,
       order: { id: 'ASC' },
       take: Constants.registrosPorPagina,
       skip: pular,
