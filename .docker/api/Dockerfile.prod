@@ -1,0 +1,21 @@
+FROM node:18.16.0-alpine3.17
+WORKDIR /home/node/api
+
+RUN apk update && apk upgrade
+RUN apk --no-cache add curl ca-certificates bash
+RUN chown node:node /home/node/api
+USER node
+
+COPY --chown=node:node ./api/package.json /home/node/api/package.json
+COPY --chown=node:node ./api/yarn.lock /home/node/api/yarn.lock
+RUN yarn install
+COPY --chown=node:node ./api/ /home/node/api/
+COPY --chown=node:node ./api/.env-example /home/node/api/.env
+COPY --chown=node:node build.sh /home/node/api/build.sh
+COPY --chown=node:node wait-for-it.sh /home/node/api/wait-for-it.sh
+RUN chmod +x /home/node/api/build.sh
+RUN chmod +x /home/node/api/wait-for-it.sh
+
+EXPOSE 3000
+ENTRYPOINT ["/home/node/api/build.sh"];
+
