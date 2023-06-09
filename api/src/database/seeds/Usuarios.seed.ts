@@ -1,4 +1,4 @@
-import { UsuarioEntity } from 'src/modules/autenticacao/usuarios/usuarios.entity';
+import { UsuariosEntity } from 'src/modules/usuarios/usuarios.entity';
 import { DataSource } from 'typeorm';
 import { Seeder, SeederFactoryManager } from 'typeorm-extension';
 
@@ -7,7 +7,7 @@ export class UsuariosSeeder implements Seeder {
     dataSource: DataSource,
     factoryManager: SeederFactoryManager,
   ): Promise<any> {
-    const repository = dataSource.getRepository(UsuarioEntity);
+    const repository = dataSource.getRepository(UsuariosEntity);
 
     const data = {
       nome: 'Admin',

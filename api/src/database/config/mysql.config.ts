@@ -3,8 +3,8 @@ import { SeederOptions } from 'typeorm-extension';
 import { RunSeeds } from '../seeds/Run.seed';
 import EstabelecimentosEntity from 'src/modules/estabelecimentos/estabelecimentos.entity';
 import VeiculosEntity from 'src/modules/veiculos/veiculos.entity';
-import { UsuarioEntity } from 'src/modules/autenticacao/usuarios/usuarios.entity';
 import ControlesEntity from 'src/modules/controles/controles.entity';
+import { UsuariosEntity } from 'src/modules/usuarios/usuarios.entity';
 
 export const mysqlConfig: DataSourceOptions & SeederOptions = {
   type: 'mysql',
@@ -16,7 +16,7 @@ export const mysqlConfig: DataSourceOptions & SeederOptions = {
   entities: [
     EstabelecimentosEntity,
     VeiculosEntity,
-    UsuarioEntity,
+    UsuariosEntity,
     ControlesEntity,
   ],
   migrations: [__dirname + '/../migrations/*_migration{.ts,.js}'],
