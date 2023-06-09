@@ -14,7 +14,10 @@ export default class ControleDestroyService
   implements IDestroyService
 {
   async execute(id: number): Promise<void> {
-    const find = await this.repository.findOneBy({ id });
+    const find = await this.repository.findOne({
+      where: { id },
+      withDeleted: true,
+    });
 
     if (!find) {
       throw new NotFoundException(MessagesAPI.CONTROLE.DESTROY.NOT_FOUND);
