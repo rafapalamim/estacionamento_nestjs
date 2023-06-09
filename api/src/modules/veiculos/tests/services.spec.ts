@@ -194,9 +194,9 @@ describe('VeiculoServices', () => {
   });
 
   it('Não deve encontrar registros', async () => {
-    expect(async () => await findAllService.execute({})).rejects.toThrowError(
-      MessagesAPI.VEICULO.FIND_ALL.NOT_FOUND,
-    );
+    const findAll = await findAllService.execute({});
+    expect(findAll.pagination.total).toBe(0);
+    expect(findAll.data).toEqual([]);
   });
 
   it('Deve filtrar apenas um registro', async () => {

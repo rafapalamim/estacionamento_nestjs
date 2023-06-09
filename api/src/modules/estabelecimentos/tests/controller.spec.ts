@@ -321,9 +321,10 @@ describe('EstabelecimentoController', () => {
       telefone: '551133334444',
     });
 
-    expect(
-      async () => await controller.findAll({ cnpj: '111' }),
-    ).rejects.toThrowError(MessagesAPI.ESTABELECIMENTO.FIND_ALL.NOT_FOUND);
+    const findAll = await controller.findAll({ cnpj: '111' });
+
+    expect(findAll.pagination.total).toBe(0);
+    expect(findAll.data).toEqual([]);
   });
 
   it('Deve remover um registro', async () => {
