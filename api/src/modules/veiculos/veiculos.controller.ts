@@ -26,11 +26,18 @@ import { FindAllVeiculoInput, FindAllVeiculoOutput } from './dto/findAll.dto';
 import { FindVeiculoOutput } from './dto/find.dto';
 import { JwtAuthGuard } from '../autenticacao/guards/jwt.guard';
 import { NotFoundOutput } from '../@base/dto/notFound.output';
+import { InternalErrorOutput } from '../@base/dto/internalError.output';
+import { Unauthorized } from '../@base/dto/Unauthorized.output';
 
 @ApiTags('veiculos')
 @Controller('veiculos')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
+@ApiResponse({
+  status: 401,
+  description: 'Token JWT não informado',
+  type: Unauthorized,
+})
 export class VeiculosController {
   constructor(
     @Inject(VeiculoCreateService)
@@ -60,6 +67,7 @@ export class VeiculosController {
   @ApiResponse({
     status: 500,
     description: 'Não foi possível incluir o veículo',
+    type: InternalErrorOutput,
   })
   async create(@Body() data: CreateVeiculoInput): Promise<CreateVeiculoOutput> {
     return await this.createService.execute(data);
@@ -80,10 +88,12 @@ export class VeiculosController {
   @ApiResponse({
     status: 404,
     description: 'Veículo não encontrado',
+    type: NotFoundOutput,
   })
   @ApiResponse({
     status: 500,
     description: 'Não foi possível atualizar os dados do veículo',
+    type: InternalErrorOutput,
   })
   async update(@Body() data: UpdateVeiculoInput): Promise<UpdateVeiculoOutput> {
     return await this.updateService.execute(data);
@@ -107,13 +117,9 @@ export class VeiculosController {
   @Get()
   @ApiResponse({
     status: 200,
-    description: 'Veículo(s) encontrado(s)',
+    description:
+      'Lista com os veículos encontrados. Caso não encontre registro(s) de acordo com o filtro informado, o atributo data devolve um array vazio',
     type: FindAllVeiculoOutput,
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Nenhum veículo encontrado',
-    type: NotFoundOutput,
   })
   async findAll(
     @Query() query: FindAllVeiculoInput,
@@ -135,6 +141,7 @@ export class VeiculosController {
   @ApiResponse({
     status: 500,
     description: 'Não foi possível remover o veículo',
+    type: InternalErrorOutput,
   })
   async destroy(@Param('id') id: number): Promise<void> {
     return await this.destroyService.execute(id);

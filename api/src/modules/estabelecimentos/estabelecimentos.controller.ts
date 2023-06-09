@@ -133,12 +133,9 @@ export class EstabelecimentosController {
   @Get()
   @ApiResponse({
     status: 200,
-    description: 'Estabelecimento(s) encontrado(s)',
+    description:
+      'Estabelecimento(s) encontrado(s). Caso não encontre registro(s) de acordo com o filtro informado, o atributo data devolve um array vazio',
     type: FindAllEstabelecimentoOutput,
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Nenhum estabelecimento encontrado',
   })
   async findAll(
     @Query() query: FindAllEstabelecimentoInput,

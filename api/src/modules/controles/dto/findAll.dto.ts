@@ -4,22 +4,34 @@ import { FindControleOutput } from './find.dto';
 import { TipoVeiculoEnum } from 'src/modules/@base/enums/tipo.veiculo.enum';
 
 export class FindAllControleInput {
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   estabelecimento_id?: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   veiculo_id?: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   veiculo_tipo?: TipoVeiculoEnum;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   pagina?: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   em_aberto?: boolean;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   cancelados?: boolean;
 }
 

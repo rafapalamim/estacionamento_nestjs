@@ -1,10 +1,9 @@
 import BaseService from 'src/modules/@base/services/service.base';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { IFindAllService } from 'src/modules/@base/services/findAll.interface';
 import { Constants } from 'src/utils/constants.helper';
 import VeiculosEntity from '../veiculos.entity';
 import { FindAllVeiculoInput, FindAllVeiculoOutput } from '../dto/findAll.dto';
-import { MessagesAPI } from 'src/utils/messages.helper';
 
 @Injectable()
 export default class VeiculoFindAllService
@@ -22,10 +21,6 @@ export default class VeiculoFindAllService
       take: Constants.registrosPorPagina,
       skip: pular,
     });
-
-    if (result.length < 1) {
-      throw new NotFoundException(MessagesAPI.VEICULO.FIND_ALL.NOT_FOUND);
-    }
 
     return {
       data: result.map((veiculo: VeiculosEntity) => {

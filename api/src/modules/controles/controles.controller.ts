@@ -73,7 +73,8 @@ export class ControlesController {
   @Get('entrada')
   @ApiResponse({
     status: 200,
-    description: 'Registros encontrados',
+    description:
+      'Registros encontrados. Caso não encontre registro(s) de acordo com o filtro informado, o atributo data devolve um array vazio',
     type: FindAllControleOutput,
   })
   async findAll(

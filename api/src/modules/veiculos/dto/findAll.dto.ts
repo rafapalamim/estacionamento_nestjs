@@ -53,6 +53,7 @@ class VeiculosDTO extends TimestampsDTO {
 export class FindAllVeiculoOutput {
   @ApiProperty({
     type: [VeiculosDTO],
+    required: false,
   })
   data: VeiculosDTO[];
 
