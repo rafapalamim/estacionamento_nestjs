@@ -4,9 +4,13 @@ import { EstabelecimentosModule } from './modules/estabelecimentos/estabelecimen
 import { VeiculosModule } from './modules/veiculos/veiculos.module';
 import { ControlesModule } from './modules/controles/controles.module';
 import { AutenticacaoModule } from './modules/autenticacao/autenticacao.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     MySQLModule,
     AutenticacaoModule,
     EstabelecimentosModule,

@@ -5,14 +5,17 @@ import EstabelecimentosEntity from 'src/modules/estabelecimentos/estabelecimento
 import VeiculosEntity from 'src/modules/veiculos/veiculos.entity';
 import ControlesEntity from 'src/modules/controles/controles.entity';
 import { UsuariosEntity } from 'src/modules/usuarios/usuarios.entity';
+import { ConfigModule } from '@nestjs/config';
+
+ConfigModule.forRoot();
 
 export const mysqlConfig: DataSourceOptions & SeederOptions = {
   type: 'mysql',
-  host: 'db',
-  port: 3306,
-  username: 'parking',
-  password: 'password',
-  database: 'parking',
+  host: process.env.MYSQL_HOST,
+  port: process.env.MYSQL_PORT as unknown as number,
+  username: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
   entities: [
     EstabelecimentosEntity,
     VeiculosEntity,
