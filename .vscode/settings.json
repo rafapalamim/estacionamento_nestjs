@@ -1,7 +1,5 @@
 {
-    "editor.formatOnPaste": false,
     "editor.formatOnSave": false,
-    "editor.insertSpaces": false,
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
     },
