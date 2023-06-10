@@ -1,6 +1,5 @@
 import { ICreateService } from 'src/modules/@base/services/create.interface';
 import { CreateEntradaInput, CreateEntradaOutput } from '../dto/create.dto';
-import BaseService from 'src/modules/@base/services/service.base';
 import ControlesEntity from '../../controles.entity';
 import {
   BadRequestException,
@@ -17,15 +16,15 @@ import { FindAllControleOutput } from '../../dto/findAll.dto';
 import VeiculosEntity from 'src/modules/veiculos/veiculos.entity';
 import { TipoVeiculoEnum } from 'src/modules/@base/enums/tipo.veiculo.enum';
 import { MessagesAPI } from 'src/utils/messages.helper';
+import { Constants } from 'src/utils/constants.helper';
 
 @Injectable()
 export default class EntradaCreateService
-  extends BaseService<ControlesEntity>
   implements ICreateService<CreateEntradaInput, CreateEntradaOutput>
 {
   constructor(
-    @Inject('REPOSITORY')
-    repository: Repository<ControlesEntity>,
+    @Inject(Constants.controleRepositorio)
+    private repository: Repository<ControlesEntity>,
 
     @Inject(EstabelecimentoFindService)
     private readonly estabelecimentoFindService: EstabelecimentoFindService,
@@ -38,9 +37,7 @@ export default class EntradaCreateService
 
     @Inject(ControleFindAllService)
     private readonly controleFindAllService: ControleFindAllService,
-  ) {
-    super(repository);
-  }
+  ) {}
 
   async execute(data: CreateEntradaInput): Promise<CreateEntradaOutput> {
     const { estabelecimento_id, veiculo_placa, veiculo_tipo, ...veiculo_data } =
@@ -66,7 +63,7 @@ export default class EntradaCreateService
         veiculo_tipo: veiculo_tipo,
       });
 
-    if (disponibilidade.pagination.total + 1 > quantidadeMaxima) {
+    if (disponibilidade.pagination.total >= quantidadeMaxima) {
       throw new BadRequestException(MessagesAPI.CONTROLE.CREATE.LIMIT);
     }
 
@@ -122,21 +119,23 @@ export default class EntradaCreateService
       }
     }
 
-    const entrada = await this.repository.insert({
+    const entityControle = this.repository.create({
       estabelecimento_id: estabelecimento_id,
       veiculo_id: veiculo.id,
       veiculo_tipo: veiculo.tipo,
       data_entrada: new Date(),
     });
 
-    if (!entrada) {
+    await this.repository.insert(entityControle);
+
+    if (!entityControle) {
       throw new InternalServerErrorException(
         MessagesAPI.CONTROLE.CREATE.SERVER_ERROR,
       );
     }
 
     return {
-      id: entrada.raw,
+      id: entityControle.id,
     };
   }
 }

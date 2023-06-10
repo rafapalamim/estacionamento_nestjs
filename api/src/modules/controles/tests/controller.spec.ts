@@ -17,6 +17,9 @@ import { NotFoundException } from '@nestjs/common';
 import { MessagesAPI } from 'src/utils/messages.helper';
 import { TipoVeiculoEnum } from 'src/modules/@base/enums/tipo.veiculo.enum';
 import { CreateEntradaInput } from '../entrada/dto/create.dto';
+import { Constants } from 'src/utils/constants.helper';
+import VeiculosEntity from 'src/modules/veiculos/veiculos.entity';
+import EstabelecimentosEntity from 'src/modules/estabelecimentos/estabelecimentos.entity';
 
 describe('ControlesController', () => {
   let controller: ControlesController;
@@ -143,9 +146,21 @@ describe('ControlesController', () => {
       controllers: [ControlesController],
       providers: [
         {
-          provide: 'REPOSITORY',
+          provide: Constants.controleRepositorio,
           useFactory: (dataSource: DataSource) =>
             dataSource.getRepository(ControlesEntity),
+          inject: ['DATA_SOURCE'],
+        },
+        {
+          provide: Constants.veiculoRepositorio,
+          useFactory: (dataSource: DataSource) =>
+            dataSource.getRepository(VeiculosEntity),
+          inject: ['DATA_SOURCE'],
+        },
+        {
+          provide: Constants.estabelecimentoRepositorio,
+          useFactory: (dataSource: DataSource) =>
+            dataSource.getRepository(EstabelecimentosEntity),
           inject: ['DATA_SOURCE'],
         },
         {

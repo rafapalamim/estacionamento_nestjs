@@ -1,15 +1,20 @@
-import BaseService from 'src/modules/@base/services/service.base';
 import { IFindService } from 'src/modules/@base/services/find.interface';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import VeiculosEntity from '../veiculos.entity';
 import { FindVeiculoOutput } from '../dto/find.dto';
 import { MessagesAPI } from 'src/utils/messages.helper';
+import { Constants } from 'src/utils/constants.helper';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export default class VeiculoFindService
-  extends BaseService<VeiculosEntity>
   implements IFindService<FindVeiculoOutput>
 {
+  constructor(
+    @Inject(Constants.veiculoRepositorio)
+    private repository: Repository<VeiculosEntity>,
+  ) {}
+
   async execute(id: number): Promise<FindVeiculoOutput> {
     const search = await this.repository.findOneBy({ id });
 

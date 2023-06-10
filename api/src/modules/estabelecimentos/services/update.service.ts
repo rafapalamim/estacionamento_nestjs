@@ -1,9 +1,9 @@
 import {
+  Inject,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import BaseService from 'src/modules/@base/services/service.base';
 import {
   UpdateEstabelecimentoInput,
   UpdateEstabelecimentoOutput,
@@ -11,13 +11,19 @@ import {
 import { IUpdateService } from 'src/modules/@base/services/update.interface';
 import EstabelecimentosEntity from '../estabelecimentos.entity';
 import { MessagesAPI } from 'src/utils/messages.helper';
+import { Constants } from 'src/utils/constants.helper';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export default class EstabelecimentoUpdateService
-  extends BaseService<EstabelecimentosEntity>
   implements
     IUpdateService<UpdateEstabelecimentoInput, UpdateEstabelecimentoOutput>
 {
+  constructor(
+    @Inject(Constants.estabelecimentoRepositorio)
+    private repository: Repository<EstabelecimentosEntity>,
+  ) {}
+
   async execute(
     data: UpdateEstabelecimentoInput,
   ): Promise<UpdateEstabelecimentoOutput> {

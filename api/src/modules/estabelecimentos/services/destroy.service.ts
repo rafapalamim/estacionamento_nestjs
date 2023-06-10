@@ -1,18 +1,22 @@
-import BaseService from 'src/modules/@base/services/service.base';
 import EstabelecimentosEntity from '../estabelecimentos.entity';
 import { IDestroyService } from 'src/modules/@base/services/destroy.interface';
 import {
+  Inject,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { MessagesAPI } from 'src/utils/messages.helper';
+import { Constants } from 'src/utils/constants.helper';
+import { Repository } from 'typeorm';
 
 @Injectable()
-export default class EstabelecimentoDestroyService
-  extends BaseService<EstabelecimentosEntity>
-  implements IDestroyService
-{
+export default class EstabelecimentoDestroyService implements IDestroyService {
+  constructor(
+    @Inject(Constants.estabelecimentoRepositorio)
+    private repository: Repository<EstabelecimentosEntity>,
+  ) {}
+
   async execute(id: number): Promise<void> {
     const find = await this.repository.findOneBy({ id });
 
