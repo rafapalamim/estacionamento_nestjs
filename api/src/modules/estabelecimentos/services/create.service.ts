@@ -3,17 +3,26 @@ import {
   CreateEstabelecimentoInput,
   CreateEstabelecimentoOutput,
 } from '../dto/create.dto';
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import BaseService from 'src/modules/@base/services/service.base';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import EstabelecimentosEntity from '../estabelecimentos.entity';
 import { MessagesAPI } from 'src/utils/messages.helper';
+import { Constants } from 'src/utils/constants.helper';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export default class EstabelecimentoCreateService
-  extends BaseService<EstabelecimentosEntity>
   implements
     ICreateService<CreateEstabelecimentoInput, CreateEstabelecimentoOutput>
 {
+  constructor(
+    @Inject(Constants.estabelecimentoRepositorio)
+    private repository: Repository<EstabelecimentosEntity>,
+  ) {}
+
   async execute(
     data: CreateEstabelecimentoInput,
   ): Promise<CreateEstabelecimentoOutput> {

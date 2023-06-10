@@ -1,19 +1,25 @@
 import {
+  Inject,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import BaseService from 'src/modules/@base/services/service.base';
 import { IUpdateService } from 'src/modules/@base/services/update.interface';
 import VeiculosEntity from '../veiculos.entity';
 import { UpdateVeiculoInput, UpdateVeiculoOutput } from '../dto/update.dto';
 import { MessagesAPI } from 'src/utils/messages.helper';
+import { Constants } from 'src/utils/constants.helper';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export default class VeiculoUpdateService
-  extends BaseService<VeiculosEntity>
   implements IUpdateService<UpdateVeiculoInput, UpdateVeiculoOutput>
 {
+  constructor(
+    @Inject(Constants.veiculoRepositorio)
+    private repository: Repository<VeiculosEntity>,
+  ) {}
+
   async execute(data: UpdateVeiculoInput): Promise<UpdateVeiculoOutput> {
     const id = data.id || null;
 

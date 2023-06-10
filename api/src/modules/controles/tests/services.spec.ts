@@ -15,6 +15,7 @@ import { DataSource } from 'typeorm';
 import ControlesEntity from '../controles.entity';
 import { TipoVeiculoEnum } from 'src/modules/@base/enums/tipo.veiculo.enum';
 import { MessagesAPI } from 'src/utils/messages.helper';
+import { Constants } from 'src/utils/constants.helper';
 
 describe('ControleServices', () => {
   let createService: EntradaCreateService;
@@ -89,7 +90,7 @@ describe('ControleServices', () => {
       imports: [SQLiteModule],
       providers: [
         {
-          provide: 'REPOSITORY',
+          provide: Constants.controleRepositorio,
           useFactory: (dataSource: DataSource) =>
             dataSource.getRepository(ControlesEntity),
           inject: ['DATA_SOURCE'],
@@ -185,7 +186,6 @@ describe('ControleServices', () => {
       veiculo_placa: 'ABC2222',
       veiculo_tipo: TipoVeiculoEnum.CARRO,
     });
-
     expect(
       async () =>
         await createService.execute({
@@ -367,7 +367,9 @@ describe('ControleServices', () => {
     await updateService.execute(1);
     await updateService.execute(2);
 
-    const findAll = await findAllService.execute({ em_aberto: true });
+    const findAll = await findAllService.execute({
+      em_aberto: true,
+    });
 
     expect(findAll.pagination.total).toBe(1);
     expect(findAll.data[0].id).toBe(3);
@@ -421,8 +423,7 @@ describe('ControleServices', () => {
 
     await updateService.execute(1);
     await destroyService.execute(2);
-
-    const findAll = await findAllService.execute({ cancelados: true });
+    const findAll = await findAllService.execute({});
 
     expect(findAll.pagination.total).toBe(3);
   });
@@ -449,7 +450,7 @@ describe('ControleServices', () => {
     await destroyService.execute(1);
     await destroyService.execute(2);
 
-    const findAll = await findAllService.execute({});
+    const findAll = await findAllService.execute({ cancelados: false });
 
     expect(findAll.pagination.total).toBe(1);
   });

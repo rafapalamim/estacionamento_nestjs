@@ -88,10 +88,16 @@ export class ControlesController {
   @ApiResponse({
     status: 201,
     description: 'Entrada registrada',
+    type: CreateEntradaOutput,
   })
   @ApiResponse({
     status: 400,
     description: 'Corpo da requisição inválido',
+    type: ThrowableError,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Estabelecimento não encontrado',
     type: ThrowableError,
   })
   @ApiResponse({

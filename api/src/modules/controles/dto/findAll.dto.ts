@@ -26,11 +26,15 @@ export class FindAllControleInput {
 
   @ApiProperty({
     required: false,
+    description:
+      "Exibe as entradas em aberto. Caso o campo 'em_aberto' seja verdadeiro, o campo cancelados por definição será falso",
   })
   em_aberto?: boolean;
 
   @ApiProperty({
     required: false,
+    description:
+      "Exibe as entradas canceladas. Caso o campo 'em_aberto' seja verdadeiro, o campo cancelados por definição será falso",
   })
   cancelados?: boolean;
 }

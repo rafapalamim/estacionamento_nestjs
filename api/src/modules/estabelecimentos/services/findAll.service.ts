@@ -1,20 +1,23 @@
-import BaseService from 'src/modules/@base/services/service.base';
 import EstabelecimentosEntity from '../estabelecimentos.entity';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { IFindAllService } from 'src/modules/@base/services/findAll.interface';
 import {
   FindAllEstabelecimentoInput,
   FindAllEstabelecimentoOutput,
 } from '../dto/findAll.dto';
 import { Constants } from 'src/utils/constants.helper';
-import { MessagesAPI } from 'src/utils/messages.helper';
+import { IsNull, Not, Repository } from 'typeorm';
 
 @Injectable()
 export default class EstabelecimentoFindAllService
-  extends BaseService<EstabelecimentosEntity>
   implements
     IFindAllService<FindAllEstabelecimentoInput, FindAllEstabelecimentoOutput>
 {
+  constructor(
+    @Inject(Constants.estabelecimentoRepositorio)
+    private repository: Repository<EstabelecimentosEntity>,
+  ) {}
+
   async execute(
     query: FindAllEstabelecimentoInput,
   ): Promise<FindAllEstabelecimentoOutput> {
@@ -35,11 +38,19 @@ export default class EstabelecimentoFindAllService
       filtroWhere['endereco'] = params.endereco;
     }
 
-    const filtroDeletados = params.ativo ?? false;
+    if (typeof params.ativo !== 'undefined') {
+      const booleanConvert =
+        Boolean(params.ativo) && typeof params.ativo == 'boolean'
+          ? params.ativo
+          : (params.ativo as unknown as string) == 'true';
+
+      filtroWhere['deleted_at'] =
+        booleanConvert == true ? IsNull() : Not(IsNull());
+    }
 
     const [result, total] = await this.repository.findAndCount({
       where: filtroWhere,
-      withDeleted: filtroDeletados,
+      withDeleted: true,
       order: { id: 'ASC' },
       take: Constants.registrosPorPagina,
       skip: pular,

@@ -1,19 +1,25 @@
 import { IUpdateService } from 'src/modules/@base/services/update.interface';
-import BaseService from 'src/modules/@base/services/service.base';
 import ControlesEntity from '../../controles.entity';
 import {
   BadRequestException,
+  Inject,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { MessagesAPI } from 'src/utils/messages.helper';
+import { Constants } from 'src/utils/constants.helper';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export default class SaidaUpdateService
-  extends BaseService<ControlesEntity>
   implements IUpdateService<number, void>
 {
+  constructor(
+    @Inject(Constants.controleRepositorio)
+    private repository: Repository<ControlesEntity>,
+  ) {}
+
   async execute(id: number): Promise<void> {
     const entrada = await this.repository.findOneBy({ id });
 
