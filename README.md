@@ -1,69 +1,293 @@
-![Dr Consulta](https://drconsulta.com/_next/image?url=%2Fimages%2FLogo-Dr-Consulta-Branco.png&w=128&q=100 "DrConsulta")
+# Descrição do projeto
 
-*"Salvar vidas e cuidar das pessoas porque elas não podem esperar nas filas da saúde."*
-Conheça: www.drconsulta.com
+O projeto consiste em desenvolver uma API de estacionamentos, onde onde **estacionamentos** são cadastrados no sistema, onde disponibilizam n vagas para **veículos** (motos e carros).
 
-## Objetivo
-O teste é destinado para vaga de Desenvolvedor Back-end entendo como o candidato efetuou a solução e o raciocinio de criação
+#### Tecnologias
 
-## Project - API
-Criar uma API REST para gerenciar um estacionamento de carros e motos.
+Para desenvolver a API proposta no teste, utilizei a stack solicitada (NestJS, TypeScript, MySQL 5, TypeORM e Swagger). Também, utilizei o SQLite para os testes de integração e docker como ambiente de desenvolvimento.
 
-#### Stack tecnológica
-- NestJS
-- TypeOrm
-- Mysql
-- Swagger
+Segui a documentação do framework para dar uma direção no desenvolvimento, mudando apenas a forma que o Nest sugere a criação dos **Services**, optei por separar em arquivos únicos cada serviço dos módulos, tentando preservar o príncipio da responsabilidade única.
 
-#### Cadastro de estabelecimento
-Criar um cadastro da empresa com os seguintes campos:
-- Nome;
-- CNPJ;
-- Endereço;
-- Telefone;
-- Quantidade de vagas para motos;
-- Quantidade de vagas para carros.
-- 
-**Todos** os campos são de preenchimento obrigatório.
+Para autenticação, utilizei o *passport* e *passport-jwt*, ambos contidos na stack do NestJS.
 
-#### Cadastro de veículos
-Criar um cadastro de veículos com os seguintes campos:
-- Marca;
-- Modelo;
-- Cor;
-- Placa;
-- Tipo.
-- 
-**Todos** os campos são de preenchimento obrigatório.
+Utilizei os testes para guiar no desenvolvimento e refatoração dos serviços e controllers.
 
-#### Funcionalidades
-- **Estabelecimento:** CRUD;
-- **Veículos:** CRUD;
-- **Controle de entrada e saída de veículos.**
 
-#### Requisitos
-- Controle JWT via Handshake
-- Modelagem de dados;
-- O retorno deverá ser em formato JSON;
-- Requisições GET, POST, PUT ou DELETE, conforme a melhor prática;
-- A persistência dos dados deverá ser em banco *relacional MYSQL*
-- Criar README do projeto descrevendo as tecnologias utilizadas, chamadas dos serviços e configurações necessário para executar a aplicação.
-   
-#### Ganha mais pontos
-- Sumário da quantidade de entrada e saída;
-- Sumário da quantidade de entrada e saída de veículos por hora;
-- Criação relatórios para visão ao dono do estabelecimento;
-- Desenvolver utilizando TDD;
+# Configurações do ambiente
 
-## DevOps (Diferencial)
-Efetuar deploy da nossa API no ambiente do Google Cloud Platform utilizando os serviços
 
-#### Serviços do GCP
-- Container Registry (Subir a imagem docker)
-- Cloud Run
+#### Faça o clone do projeto
 
-## Submissão
-Crie um fork do teste para acompanharmos o seu desenvolvimento através dos seus commits.
+```bash
+> git clone https://github.com/rafapalamim/estacionamento_nestjs.git deploy
+```
 
-## Obrigado!
-Agradecemos sua participação no teste. Boa sorte! 😄
+Entre na pasta criada
+
+```bash
+> cd deploy
+```
+
+#### Execute o comando docker compose
+
+```bash
+> docker compose -f docker-compose.prod.yml up -d --build
+```
+
+***Aguardar até as migrações e seeds serem efetuadas (poucos segundos)***
+
+**URL para acessar o projeto (swagger)**: http://localhost:3000/api/v1
+
+ 
+
+Para executar os testes:
+```bash
+> docker exec -it estacionamento_api yarn test
+```
+
+# Credenciais para autorização
+
+email: admin@mail.com
+
+senha: password
+
+
+**Atenção: O banco de dados não está setado para montar um volume, ao encerrar os containers os dados serão perdidos**
+
+# Chamadas dos serviços
+
+
+#### Autenticação
+
+`POST http://localhost:3000/api/v1/autenticacao/login`
+
+```
+curl -X 'POST' \
+  'http://localhost:3000/api/v1/autenticacao/login' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "email": "admin@mail.com",
+  "senha": "password"
+}'
+```
+
+#### Estabelecimentos
+
+Cria um estabelecimento
+
+`POST http://localhost:3000/api/v1/estabelecimentos`
+
+
+```
+curl -X 'POST' \
+  'http://localhost:3000/api/v1/estabelecimentos' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer ...' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "nome": "John Doe",
+  "cnpj": "14100200000199",
+  "endereco": "Avenida XPTO, 15",
+  "telefone": "5511983387812",
+  "quantidade_vagas_motos": 15,
+  "quantidade_vagas_carros": 30
+}'
+```
+Atualiza um estabelecimento caso forneça um ID. Caso não, um estabelecimento é criado.
+
+`PUT http://localhost:3000/api/v1/estabelecimentos`
+
+```
+curl -X 'PUT' \
+  'http://localhost:3000/api/v1/estabelecimentos' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer ...' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "nome": "John Doe",
+  "cnpj": "14100200000199",
+  "endereco": "Avenida XPTO, 15",
+  "telefone": "5511983387812",
+  "quantidade_vagas_motos": 15,
+  "quantidade_vagas_carros": 30,
+  "id": 1
+}'
+```
+
+Busca todos os estabelecimentos
+
+**Parâmetros (Query string):** ?nome=string&cnpj=string&endereco=string&ativo=boolean&pagina=number
+
+`GET http://localhost:3000/api/v1/estabelecimentos`
+
+```
+curl -X 'GET' \
+  'http://localhost:3000/api/v1/estabelecimentos?pagina=0' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer ...'
+```
+
+Busca um estabelecimento pelo seu ID
+
+`GET http://localhost:3000/api/v1/estabelecimentos/{id_estabelecimento}`
+
+```
+curl -X 'GET' \
+  'http://localhost:3000/api/v1/estabelecimentos/1' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer ...'
+```
+Deleta um estabelecimento (soft delete)
+
+`DELETE http://localhost:3000/api/v1/estabelecimentos/{id_estabelecimento}`
+
+```
+curl -X 'DELETE' \
+  'http://localhost:3000/api/v1/estabelecimentos/1' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer ...'
+```
+
+#### Veículos
+
+Cria um veículo (somente se a placa não existir no sistema [UNIQUE])
+
+`POST http://localhost:3000/api/v1/veiculos`
+
+```
+curl -X 'POST' \
+  'http://localhost:3000/api/v1/veiculos' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer ...' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "marca": "Volkswagen",
+  "modelo": "Gol",
+  "cor": "Azul",
+  "placa": "AAA1111",
+  "tipo": "CARRO"
+}'
+```
+
+Atualiza um veículo caso informe o ID. Caso não, um veículo será criado (somente se a placa não existir no sistema [UNIQUE])
+
+`PUT http://localhost:3000/api/v1/veiculos`
+
+```
+curl -X 'PUT' \
+  'http://localhost:3000/api/v1/veiculos' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer ...' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "marca": "Fiat",
+  "modelo": "Palio",
+  "cor": "Prata",
+  "placa": "AAA2222",
+  "tipo": "CARRO",
+  "id": 1
+}'
+```
+
+Busca todos os veículos
+
+**Parâmetros (Query string):** ?placa=string&cor=string&modelo=string&ativo=boolean&pagina=number
+
+`GET http://localhost:3000/api/v1/veiculos`
+
+```
+curl -X 'GET' \
+  'http://localhost:3000/api/v1/veiculos' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer ...'
+```
+Busca um veículo pelo ID
+
+`GET http://localhost:3000/api/v1/veiculos/{id_veiculo}`
+
+```
+curl -X 'GET' \
+  'http://localhost:3000/api/v1/veiculos/1' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer ...'
+```
+
+Deleta um veículo (soft delete)
+
+`DELETE http://localhost:3000/api/v1/veiculos/{id}`
+
+```
+curl -X 'DELETE' \
+  'http://localhost:3000/api/v1/veiculos/8' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer ...'
+```
+
+#### Controles
+
+Adiciona uma entrada no estabelecimento X com o veículo Y. Os atributos necessários são 'estabelecimento_id', 'veiculo_placa' e 'veiculo_tipo', os demais são opcionais (serve para criar o veículo caso a placa não exista)
+
+`POST http://localhost:3000/api/v1/controles/entrada`
+
+```
+curl -X 'POST' \
+  'http://localhost:3000/api/v1/controles/entrada' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer ...' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "estabelecimento_id": 1,
+  "veiculo_placa": "ABC1234",
+  "veiculo_tipo": "MOTO",
+  "veiculo_marca": "string",
+  "veiculo_modelo": "string",
+  "veiculo_cor": "string"
+}'
+```
+
+Encerra a entrada do veículo Y no estabelecimento Y
+
+`PATCH http://localhost:3000/api/v1/controles/saida/{id_entrada}`
+
+```
+curl -X 'PATCH' \
+  'http://localhost:3000/api/v1/controles/saida/5' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer ...'
+```
+
+Busca todas as entradas
+
+**Parâmetros (Query string):** ?estabelecimento_id=number&veiculo_id=number&veiculo_tipo=['CARRO','MOTO']&em_aberto=boolean&cancelados=boolean&pagina=number
+
+`GET http://localhost:3000/api/v1/controles/entrada`
+
+```
+curl -X 'GET' \
+  'http://localhost:3000/api/v1/controles/entrada' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer ...'
+```
+
+Busca a entrada pelo seu ID
+
+`GET http://localhost:3000/api/v1/controles/entrada/{id_entrada}`
+
+```
+curl -X 'GET' \
+  'http://localhost:3000/api/v1/controles/entrada/1' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer ...'
+```
+
+Deleta uma entrada (soft delete)
+
+`DELETE http://localhost:3000/api/v1/controles/entrada/{id_entrada}`
+
+```
+curl -X 'DELETE' \
+  'http://localhost:3000/api/v1/controles/entrada/1' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer ...'
+```
