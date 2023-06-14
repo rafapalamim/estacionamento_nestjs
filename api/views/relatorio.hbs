@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Relatórios</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" />
+</head>
+
+<body>
+  <div class="container-fluid bg-blue-800 py-8">
+    <div class="container mx-auto text-white">Relatórios - Estacionamento API</div>
+  </div>
+  <main class="container-fluid">
+    <div class="container mx-auto">
+
+      <!-- Filters area -->
+      <div class="py-8 my-4 flex flex-row items-end justify-between gap-4">
+        <div class="w-full">
+          <label for="estabelecimento" class="mb-2 block font-bold">Estabelecimento:</label>
+          <select id="estabelecimento" name="estabelecimento" class="shadow border rounded w-full py-2 px-3 bg-white">
+            <option value="">Todos</option>
+            {{#estabelecimentos}}
+            <option value={{id}}>{{id}} - {{nome}} ({{endereco}}) {{#if desativado}} (Desativado) {{/if}}</option>
+            {{/estabelecimentos}}
+          </select>
+        </div>
+
+        <div class="w-full">
+          <label for="data_inicio" class="mb-2 block font-bold">Início:</label>
+          <input
+            class="flatpickr flatpickr-input shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:shadow-outline date_fields"
+            name="data_inicio" id="data_inicio" value="" />
+        </div>
+
+        <div class="w-full">
+          <label for="data_fim" class="mb-2 block font-bold">Fim:</label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:shadow-outline date_fields"
+            name="data_fim" id="data_fim" value="" />
+        </div>
+
+        <button class="rounded bg-blue-400 text-white py-2 px-4 hover:bg-blue-600 h-full pointer transition-colors"
+          id="btn_pesquisar">Pesquisar</button>
+      </div>
+
+      <!-- Collapse area -->
+      <div id="accordion" class="my-8">
+
+        <div class="border border-neutral-200 bg-white mb-8">
+          <h2 class="mb-0" id="em_aberto_accordion">
+            <button
+              class="group relative flex w-full items-center rounded-t-[15px] border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none [&:not([data-te-collapse-collapsed])]:bg-white [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)]"
+              type="button" data-te-collapse-init data-te-target="#em_aberto_area" aria-expanded="true"
+              aria-controls="em_aberto_area">
+              Em aberto (Não leva em consideração as datas filtradas)
+              <span
+                class="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="h-6 w-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+              </span>
+            </button>
+          </h2>
+          <div id="em_aberto_area" class="!visible" data-te-collapse-item data-te-collapse-show
+            aria-labelledby="em_aberto_accordion" data-te-parent="#accordionExample">
+            <div class="px-5 py-4">
+              <div class="row flex flex-row items-center justify-between">
+                <div class="w-3/12">
+                  <p class="rounded-full bg-blue-400 table px-4 text-white mb-2">Em aberto: <span id="totalizador_em_aberto">0</span></p>
+                </div>
+                <div class="w-9/12" id="table_em_aberto"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="border border-neutral-200 bg-white mb-8">
+          <h2 class="mb-0" id="pesquisa_accordion">
+            <button
+              class="group relative flex w-full items-center rounded-t-[15px] border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none [&:not([data-te-collapse-collapsed])]:bg-white [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)]"
+              type="button" data-te-collapse-init data-te-target="#pesquisa_area" aria-expanded="true"
+              aria-controls="pesquisa_area">
+              Dados da pesquisa
+              <span
+                class="ml-auto h-5 w-5 shrink-0 rotate-[-180deg] fill-[#336dec] transition-transform duration-200 ease-in-out group-[[data-te-collapse-collapsed]]:rotate-0 group-[[data-te-collapse-collapsed]]:fill-[#212529] motion-reduce:transition-none">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="h-6 w-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+              </span>
+            </button>
+          </h2>
+          <div id="pesquisa_area" class="!visible" data-te-collapse-item data-te-collapse-show
+            aria-labelledby="pesquisa_accordion" data-te-parent="#accordionExample">
+            <div class="px-5 py-4">
+              <div class="row flex flex-row items-center justify-between">
+                <div class="w-3/12">
+                  <p class="rounded-full bg-blue-400 table px-4 text-white mb-2">Total: <span id="totalizador_pesquisa_total">0</span></p>
+                  <p class="rounded-full bg-blue-400 table px-4 text-white mb-2">Em aberto: <span id="totalizador_pesquisa_em_aberto">0</span></p>
+                  <p class="rounded-full bg-blue-400 table px-4 text-white mb-2">Saídas: <span id="totalizador_pesquisa_saidas">0</span></p>
+                </div>
+                <div class="w-9/12" id="table_pesquisa"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.3.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
+  <script>
+
+    flatpickr(".date_fields", {
+      locale: "pt",
+      enableTime: true,
+      dateFormat: "d/m/Y H:i",
+    });
+
+    function parseDate(date, seconds) {
+      var parts = date.match(/(\d+)/g);
+      var seconds = seconds || '00';
+      return `${parts[2].padStart(2, '0')}-${String(parts[1]).padStart(2, '0')}-${parts[0].padStart(2, '0')}T${parts[3].padStart(2, '0')}:${parts[4].padStart(2, '0')}:${seconds.padStart(2, '0')}Z`;
+    }
+
+    function getParams() {
+      const params = {};
+      const url = 'http://localhost:3000/api/v1/relatorio/dados';
+      const dataInicio = document.querySelector('#data_inicio');
+      const dataFim = document.querySelector('#data_fim');
+      const estabelecimento = document.querySelector('#estabelecimento');
+
+      if (dataInicio.value.trim() != '') {
+        params["data_inicio"] = parseDate(dataInicio.value.trim(), '00.000');
+      }
+
+      if (dataFim.value.trim() != '') {
+        params["data_fim"] = parseDate(dataFim.value.trim(), '59.999');
+      }
+
+      if (estabelecimento.value.trim() != '') {
+        params["estabelecimento_id"] = estabelecimento.value.trim();
+      }
+
+      const searchParams = new URLSearchParams(params).toString();
+
+      return url + '?' + searchParams;
+    }
+
+    // window.addEventListener('load', async function(e){
+    //   await pesquisar();
+    // });
+
+    document.querySelector('#btn_pesquisar').addEventListener('click', async function (e) {
+      await pesquisar();
+    });
+
+    async function pesquisar() {
+      const urlWithParams = getParams();
+      const data = await fetch(urlWithParams)
+      const result = await data.json();
+      preencherEmAberto(result.data.em_aberto);
+      preencherPesquisa(result.data.pesquisa);
+    }
+
+    function preencherEmAberto(data) {
+      mostrarTotalizador(data.total, document.querySelector('#totalizador_em_aberto'));
+      gerarTabela(data.data, document.querySelector('#table_em_aberto'));
+    }
+
+    function preencherPesquisa(data) {
+      mostrarTotalizador(data.total, document.querySelector('#totalizador_pesquisa_total'));
+      mostrarTotalizador(data.totalEmAberto, document.querySelector('#totalizador_pesquisa_em_aberto'));
+      mostrarTotalizador(data.totalSaidas, document.querySelector('#totalizador_pesquisa_saidas'));
+      gerarTabela(data.data, document.querySelector('#table_pesquisa'));
+    }
+
+    function mostrarTotalizador(quantidade, elemento) {
+      elemento.innerHTML = quantidade;
+    }
+
+    function gerarTabela(data, output) {
+
+      output.innerHTML = '';
+
+      const table = document.createElement('table');
+      table.classList.add('table-auto', 'w-full');
+
+      const thead = document.createElement('thead');
+      thead.classList.add('text-left', 'uppercase', 'font-bold', 'border-b', 'font-medium', 'border-gray-800', 'mb-2');
+
+      const tbody = document.createElement('tbody');
+
+      for (var i = 0; i < data.length; i++) {
+
+        if (i === 0) {
+          var tr = document.createElement('tr');
+
+          Object.entries(data[i]).forEach(function (value) {
+            var td = document.createElement('td');
+            td.classList.add('py-4')
+            td.innerHTML = value[0];
+            tr.appendChild(td);
+          });
+
+          thead.appendChild(tr);
+        }
+
+        var tr = document.createElement('tr');
+        Object.entries(data[i]).forEach(function (value) {
+          var td = document.createElement('td');
+          td.classList.add('py-2')
+          td.innerHTML = value[1];
+          tr.appendChild(td);
+        });
+        tr.classList.add('border-b', 'font-medium', 'border-gray-200', 'mb-2');
+        tbody.appendChild(tr);
+      }
+
+      table.appendChild(thead);
+      table.appendChild(tbody);
+      output.appendChild(table);
+    }
+
+  </script>
+</body>
+
+</html>
