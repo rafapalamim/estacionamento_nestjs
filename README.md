@@ -301,3 +301,7 @@ curl -X 'DELETE' \
   -H 'accept: */*' \
   -H 'Authorization: Bearer ...'
 ```
+
+# Pontuações
+
+* As datas nos retornos da API estão sem a formatação correta, de acordo com o timezone "America/Sao_Paulo" (no relatório estão formatadas corretamente).
