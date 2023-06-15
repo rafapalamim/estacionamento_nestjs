@@ -108,6 +108,7 @@ export default class EntradaCreateService
       veiculo = listaVeiculos.data[0];
 
       const temEntradaVigente = await this.controleFindAllService.execute({
+        estabelecimento_id: estabelecimento_id,
         em_aberto: true,
         veiculo_id: veiculo.id,
       });

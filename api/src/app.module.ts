@@ -5,6 +5,7 @@ import { VeiculosModule } from './modules/veiculos/veiculos.module';
 import { ControlesModule } from './modules/controles/controles.module';
 import { AutenticacaoModule } from './modules/autenticacao/autenticacao.module';
 import { ConfigModule } from '@nestjs/config';
+import RelatoriosModule from './modules/relatorios/relatorios.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ConfigModule } from '@nestjs/config';
     EstabelecimentosModule,
     VeiculosModule,
     ControlesModule,
+    RelatoriosModule,
   ],
   controllers: [],
   providers: [],
