@@ -28,6 +28,15 @@ export default class RelatorioControlesService {
       },
     };
 
+    const optionsLocaleDate = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    };
+
     const queryEmAberto = this.repository
       .createQueryBuilder('controles')
       .select([
@@ -48,7 +57,8 @@ export default class RelatorioControlesService {
         'veiculos',
         'controles.veiculo_id = veiculos.id',
       )
-      .where('data_saida IS NULL');
+      .where('controles.data_saida IS NULL')
+      .orderBy('controles.estabelecimento_id', 'ASC');
 
     if (estabelecimento_id) {
       queryEmAberto.andWhere('controles.estabelecimento_id = :id', {
@@ -65,7 +75,9 @@ export default class RelatorioControlesService {
           new Date(controle.controles_data_entrada).toLocaleDateString(
             'pt-BR',
           ) +
-          ` ${controle.controles_data_entrada.toISOString().substring(11, 19)}`,
+          ` ${controle.controles_data_entrada
+            .toLocaleDateString('pt-BR', optionsLocaleDate)
+            .substring(11, 20)}`,
         veiculo: {
           id: controle.veiculos_id,
           modelo: controle.veiculos_modelo,
@@ -97,7 +109,8 @@ export default class RelatorioControlesService {
         VeiculosEntity,
         'veiculos',
         'controles.veiculo_id = veiculos.id',
-      );
+      )
+      .orderBy('controles.estabelecimento_id', 'ASC');
 
     if (estabelecimento_id) {
       queryPesquisa.where('controles.estabelecimento_id = :id', {
@@ -137,15 +150,17 @@ export default class RelatorioControlesService {
           new Date(controle.controles_data_entrada).toLocaleDateString(
             'pt-BR',
           ) +
-          ` ${controle.controles_data_entrada.toISOString().substring(11, 19)}`,
+          ` ${controle.controles_data_entrada
+            .toLocaleDateString('pt-BR', optionsLocaleDate)
+            .substring(11, 20)}`,
         saida:
           controle.controles_data_saida !== null
             ? new Date(controle.controles_data_saida).toLocaleDateString(
                 'pt-BR',
               ) +
               ` ${controle.controles_data_saida
-                .toISOString()
-                .substring(11, 19)}`
+                .toLocaleDateString('pt-BR', optionsLocaleDate)
+                .substring(11, 20)}`
             : null,
         veiculo: {
           id: controle.veiculos_id,

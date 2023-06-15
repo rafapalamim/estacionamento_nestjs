@@ -2,8 +2,10 @@ import { Controller, Get, Query, Render } from '@nestjs/common';
 import RelatorioEstabelecimentosService from './services/estabelecimentos.service';
 import RelatorioControlesService from './services/controles.service';
 import { RelatorioInput } from './dto/relatorio.dto';
+import { ApiExcludeController } from '@nestjs/swagger';
 
 @Controller('relatorio')
+@ApiExcludeController()
 export default class RelatoriosController {
   constructor(
     private estabelecimentosService: RelatorioEstabelecimentosService,
