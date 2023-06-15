@@ -7,6 +7,14 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" />
+  <style>
+    td>span{
+      font-size: 12px;
+      margin: 0px;
+      background-color: #dedede;
+      padding: 4px 8px;
+    }
+  </style>
 </head>
 
 <body>
@@ -70,7 +78,8 @@
             <div class="px-5 py-4">
               <div class="row flex flex-row items-center justify-between">
                 <div class="w-3/12">
-                  <p class="rounded-full bg-blue-400 table px-4 text-white mb-2">Em aberto: <span id="totalizador_em_aberto">0</span></p>
+                  <p class="rounded-full bg-blue-400 table px-4 text-white mb-2">Em aberto: <span
+                      id="totalizador_em_aberto">0</span></p>
                 </div>
                 <div class="w-9/12" id="table_em_aberto"></div>
               </div>
@@ -99,9 +108,12 @@
             <div class="px-5 py-4">
               <div class="row flex flex-row items-center justify-between">
                 <div class="w-3/12">
-                  <p class="rounded-full bg-blue-400 table px-4 text-white mb-2">Total: <span id="totalizador_pesquisa_total">0</span></p>
-                  <p class="rounded-full bg-blue-400 table px-4 text-white mb-2">Em aberto: <span id="totalizador_pesquisa_em_aberto">0</span></p>
-                  <p class="rounded-full bg-blue-400 table px-4 text-white mb-2">Saídas: <span id="totalizador_pesquisa_saidas">0</span></p>
+                  <p class="rounded-full bg-blue-400 table px-4 text-white mb-2">Total: <span
+                      id="totalizador_pesquisa_total">0</span></p>
+                  <p class="rounded-full bg-blue-400 table px-4 text-white mb-2">Em aberto: <span
+                      id="totalizador_pesquisa_em_aberto">0</span></p>
+                  <p class="rounded-full bg-blue-400 table px-4 text-white mb-2">Saídas: <span
+                      id="totalizador_pesquisa_saidas">0</span></p>
                 </div>
                 <div class="w-9/12" id="table_pesquisa"></div>
               </div>
@@ -155,9 +167,9 @@
       return url + '?' + searchParams;
     }
 
-    // window.addEventListener('load', async function(e){
-    //   await pesquisar();
-    // });
+    window.addEventListener('load', async function(e){
+      await pesquisar();
+    });
 
     document.querySelector('#btn_pesquisar').addEventListener('click', async function (e) {
       await pesquisar();
@@ -218,7 +230,22 @@
         Object.entries(data[i]).forEach(function (value) {
           var td = document.createElement('td');
           td.classList.add('py-2')
-          td.innerHTML = value[1];
+
+          if (typeof value[1] == 'object' && value[1] !== null) {
+
+            var stringValue = '';
+
+            Object.entries(value[1]).forEach(function (subValue) {
+              stringValue += `<span><b>${subValue[0]}</b>: ${subValue[1]}</span>`;
+            });
+
+            td.innerHTML = stringValue;
+
+          } else {
+            td.innerHTML = value[1];
+          }
+
+
           tr.appendChild(td);
         });
         tr.classList.add('border-b', 'font-medium', 'border-gray-200', 'mb-2');
