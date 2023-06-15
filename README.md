@@ -52,7 +52,17 @@ email: admin@mail.com
 senha: password
 
 
+
+# Modelagem de dados
+
+
 **Atenção: O banco de dados não está setado para montar um volume, ao encerrar os containers os dados serão perdidos**
+
+![Estrutura de tabelas](https://github.com/rafapalamim/estacionamento_nestjs/blob/master/modelagem.png?raw=true)
+
+# Relatório
+
+O relatório está disponível pela rota http://localhost:3000/api/v1/relatorio
 
 # Chamadas dos serviços
 
